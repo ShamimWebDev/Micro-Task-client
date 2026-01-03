@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FiMenu, FiX, FiGithub } from "react-icons/fi";
-import { useState, useContext } from "react";
+import { FiMenu, FiX, FiGithub, FiBell } from "react-icons/fi";
+import { useState, useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../providers/AuthProvider";
+import { axiosSecure } from "../hooks/useAxios";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -11,6 +12,30 @@ const Navbar = () => {
 
   // Default coins if not in user object yet (should be fetched from DB)
   const coins = user?.coins || 10;
+
+  const [isNotifyOpen, setIsNotifyOpen] = useState(false);
+  const notifyRef = useRef();
+
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    if (user?.email) {
+      axiosSecure
+        .get(`/notifications/${user.email}`)
+        .then((res) => setNotifications(res.data))
+        .catch((err) => console.error(err));
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (notifyRef.current && !notifyRef.current.contains(event.target)) {
+        setIsNotifyOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -71,6 +96,49 @@ const Navbar = () => {
               >
                 <FiGithub /> Join as Developer
               </a>
+
+              {user && (
+                <div className="relative" ref={notifyRef}>
+                  <button
+                    onClick={() => setIsNotifyOpen(!isNotifyOpen)}
+                    className="p-2 text-slate-400 hover:text-white transition-colors relative"
+                  >
+                    <FiBell size={20} />
+                    <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-slate-900"></span>
+                  </button>
+
+                  {/* Notification Pop-up */}
+                  {isNotifyOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      className="absolute right-0 mt-3 w-80 glass-card rounded-2xl border border-slate-800 shadow-2xl p-4 overflow-hidden"
+                    >
+                      <h4 className="text-white font-bold mb-4 px-2">
+                        Notifications
+                      </h4>
+                      <div className="space-y-3 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+                        {notifications.map((n) => (
+                          <div
+                            key={n.id}
+                            className="p-3 bg-slate-900/50 rounded-xl border border-slate-800 hover:border-indigo-500/30 transition-all group"
+                          >
+                            <p className="text-slate-300 text-xs leading-relaxed group-hover:text-white">
+                              {n.message}
+                            </p>
+                            <span className="text-slate-600 text-[10px] mt-2 block italic">
+                              {n.date}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                      <button className="w-full text-center text-xs text-indigo-400 mt-4 font-bold hover:text-indigo-300 transition-colors">
+                        Mark all as read
+                      </button>
+                    </motion.div>
+                  )}
+                </div>
+              )}
 
               {user && (
                 <div className="ml-4 flex items-center gap-3">

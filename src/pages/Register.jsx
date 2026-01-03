@@ -4,6 +4,8 @@ import { AuthContext } from "../providers/AuthProvider";
 import { motion } from "framer-motion";
 import { FiUser, FiMail, FiLock, FiImage, FiBriefcase } from "react-icons/fi";
 import { FaGoogle } from "react-icons/fa";
+import { imageUpload } from "../utils/imageUpload";
+import { axiosPublic } from "../hooks/useAxios";
 
 const Register = () => {
   const { createUser, updateUserProfile, signInWithGoogle } =
@@ -16,7 +18,7 @@ const Register = () => {
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
-    const photo = form.photo.value;
+    const image = form.image.files[0];
     const password = form.password.value;
     const role = form.role.value;
 
@@ -29,21 +31,24 @@ const Register = () => {
     }
 
     try {
+      // 1. Upload image to imgBB
+      const photoURL = await imageUpload(image);
+
+      // 2. Create User
       const result = await createUser(email, password);
-      await updateUserProfile(name, photo);
+      await updateUserProfile(name, photoURL);
 
       const userInfo = {
         name,
         email,
-        photo,
+        photo: photoURL,
         role,
         coins: role === "worker" ? 10 : 50,
         uid: result.user.uid,
       };
 
       console.log("Saving user to DB:", userInfo);
-      // TODO: Post to backend API
-      // await axiosPublic.post('/users', userInfo);
+      await axiosPublic.post("/users", userInfo);
 
       navigate("/");
     } catch (err) {
@@ -63,7 +68,7 @@ const Register = () => {
         uid: result.user.uid,
       };
       console.log("Saving Google user to DB:", userInfo);
-      // TODO: Post to backend API
+      await axiosPublic.post("/users", userInfo);
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -107,15 +112,15 @@ const Register = () => {
             />
           </div>
 
-          {/* Photo URL */}
+          {/* Profile Picture */}
           <div className="relative">
             <FiImage className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
             <input
-              name="photo"
-              type="url"
-              placeholder="Profile Picture URL"
+              name="image"
+              type="file"
+              accept="image/*"
               required
-              className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-indigo-500 transition-colors"
+              className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-2.5 pl-12 pr-4 text-slate-400 file:mr-4 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer focus:outline-none focus:border-indigo-500 transition-colors"
             />
           </div>
 

@@ -9,6 +9,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
+import axios from "axios";
 
 export const AuthContext = createContext(null);
 
@@ -47,21 +48,28 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
 
-      // Mocking token storage for now
       if (currentUser) {
-        localStorage.setItem("access-token", "mock-token-" + currentUser.uid);
+        // Get token and store in local storage
+        try {
+          const { data } = await axios.post("http://localhost:5000/jwt", {
+            email: currentUser.email,
+          });
+          if (data.token) {
+            localStorage.setItem("access-token", data.token);
+          }
+        } catch (err) {
+          console.error("JWT Error:", err);
+        }
       } else {
         localStorage.removeItem("access-token");
       }
 
       setLoading(false);
     });
-    return () => {
-      return unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
 
   const authInfo = {

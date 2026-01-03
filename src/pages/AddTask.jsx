@@ -10,13 +10,15 @@ import {
   FiType,
   FiFileText,
 } from "react-icons/fi";
+import { imageUpload } from "../utils/imageUpload";
+import { axiosSecure } from "../hooks/useAxios";
 
 const AddTask = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -27,7 +29,7 @@ const AddTask = () => {
     const payable_amount = parseInt(form.payable_amount.value);
     const completion_date = form.completion_date.value;
     const submission_info = form.submission_info.value;
-    const image_url = form.image_url.value;
+    const image = form.image.files[0];
 
     const totalCost = required_workers * payable_amount;
     const availableCoins = user?.coins || 100; // Mock coins if not found
@@ -41,27 +43,32 @@ const AddTask = () => {
       return;
     }
 
-    // Mock saving task
-    const newTask = {
-      title,
-      detail,
-      required_workers,
-      payable_amount,
-      completion_date,
-      submission_info,
-      image_url,
-      buyer_email: user.email,
-      status: "active",
-    };
+    try {
+      const image_url = await imageUpload(image);
 
-    console.log("Saving Task:", newTask);
+      const newTask = {
+        title,
+        detail,
+        required_workers,
+        payable_amount,
+        completion_date,
+        submission_info,
+        image_url,
+        buyer_email: user.email,
+        status: "active",
+      };
 
-    // Success
-    setTimeout(() => {
+      console.log("Saving Task:", newTask);
+
+      await axiosSecure.post("/tasks", newTask);
+
       alert("Task added successfully! Coins deducted from your balance.");
       navigate("/dashboard/my-tasks");
       setLoading(false);
-    }, 1000);
+    } catch (err) {
+      alert("Image upload failed. Please try again.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -163,19 +170,19 @@ const AddTask = () => {
               </div>
             </div>
 
-            {/* Image URL */}
+            {/* Task Image */}
             <div>
               <label className="text-slate-400 text-sm mb-2 block font-medium">
-                Task Image URL
+                Task Image
               </label>
               <div className="relative">
                 <FiImage className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
-                  name="image_url"
-                  type="url"
-                  placeholder="https://..."
+                  name="image"
+                  type="file"
+                  accept="image/*"
                   required
-                  className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-2.5 pl-12 pr-4 text-slate-400 file:mr-4 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer focus:outline-none focus:border-indigo-500 transition-colors"
                 />
               </div>
             </div>

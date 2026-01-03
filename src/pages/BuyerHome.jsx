@@ -9,6 +9,7 @@ const BuyerHome = () => {
   const [statsData, setStatsData] = useState(null);
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedSub, setSelectedSub] = useState(null);
 
   useEffect(() => {
     if (user?.email) {
@@ -186,6 +187,41 @@ const BuyerHome = () => {
           </table>
         </div>
       </div>
+
+      {/* Modal */}
+      {selectedSub && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="glass-card max-w-lg w-full p-8 rounded-3xl border border-slate-700 shadow-2xl relative"
+          >
+            <h3 className="text-2xl font-bold text-white mb-6">
+              Submission Proof
+            </h3>
+            <div className="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 text-slate-300 italic mb-8 max-h-60 overflow-y-auto custom-scrollbar">
+              {selectedSub.submission_details}
+            </div>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setSelectedSub(null)}
+                className="px-6 py-2 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-colors"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  handleApprove(selectedSub);
+                  setSelectedSub(null);
+                }}
+                className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-colors"
+              >
+                Approve Now
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };

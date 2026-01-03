@@ -1,7 +1,8 @@
 import Navbar from "../components/Navbar";
 import HeroSection from "../components/HeroSection";
 import BestWorkers from "../components/BestWorkers";
-// import Testimonials from '../components/Testimonials';
+import Testimonials from "../components/Testimonials";
+import HowItWorks from "../components/HowItWorks";
 // import Footer from '../components/Footer';
 
 const Home = () => {
@@ -11,6 +12,8 @@ const Home = () => {
       <main className="flex-grow">
         <HeroSection />
         <BestWorkers />
+        <Testimonials />
+        <HowItWorks />
         <div className="container mx-auto px-4 py-8">
           <h1 className="text-4xl font-bold text-center text-gradient mb-4">
             Welcome to Micro-Task

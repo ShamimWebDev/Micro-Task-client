@@ -20,11 +20,13 @@ import ManageTasks from "./pages/ManageTasks";
 import AuthProvider from "./providers/AuthProvider";
 import PrivateRoute from "./routes/PrivateRoute";
 import { AdminRoute, BuyerRoute, WorkerRoute } from "./routes/RoleRoutes";
+import ScrollToTop from "./components/ScrollToTop";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />

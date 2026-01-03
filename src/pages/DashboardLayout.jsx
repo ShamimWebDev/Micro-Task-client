@@ -1,13 +1,13 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import { useContext } from "react";
 import { AuthContext } from "../providers/AuthProvider";
+import PageWrapper from "../components/PageWrapper";
 
 const DashboardLayout = () => {
   const { user } = useContext(AuthContext);
+  const { pathname } = useLocation();
 
-  // In a real app, role would come from DB.
-  // Mocking for now: if user is logged in, use their role, else 'worker'
   const role = user?.role || "worker";
 
   return (
@@ -15,7 +15,9 @@ const DashboardLayout = () => {
       <Sidebar role={role} />
       <main className="grow p-4 lg:p-8 overflow-x-hidden">
         <div className="max-w-6xl mx-auto">
-          <Outlet />
+          <PageWrapper key={pathname}>
+            <Outlet />
+          </PageWrapper>
         </div>
       </main>
     </div>

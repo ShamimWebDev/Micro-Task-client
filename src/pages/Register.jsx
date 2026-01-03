@@ -29,6 +29,12 @@ const Register = () => {
       setError("Password must be at least 6 characters long.");
       return;
     }
+    if (!/(?=.*[A-Z])(?=.*[!@#$&*])/.test(password)) {
+      setError(
+        "Password must have at least one capital letter and one special character."
+      );
+      return;
+    }
 
     try {
       // 1. Upload image to imgBB

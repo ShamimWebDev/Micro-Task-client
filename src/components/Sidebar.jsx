@@ -39,7 +39,17 @@ const Sidebar = ({ role }) => {
   // Placeholder for other roles
   const workerLinks = [
     { name: "Home", path: "/dashboard", icon: <FiHome /> },
-    // ... more
+    { name: "Task List", path: "/dashboard/task-list", icon: <FiList /> },
+    {
+      name: "My Submissions",
+      path: "/dashboard/my-submissions",
+      icon: <FiCheckSquare />,
+    },
+    {
+      name: "Withdrawals",
+      path: "/dashboard/withdrawals",
+      icon: <FiDollarSign />,
+    },
   ];
 
   const links = role === "buyer" ? buyerLinks : workerLinks;

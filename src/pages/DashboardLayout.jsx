@@ -6,9 +6,9 @@ import { AuthContext } from "../providers/AuthProvider";
 const DashboardLayout = () => {
   const { user } = useContext(AuthContext);
 
-  // In a real app, role would come from DB. Mocking for now based on user data
-  // or we can set it in AuthProvider. Assuming 'buyer' for testing.
-  const role = "buyer";
+  // In a real app, role would come from DB.
+  // Mocking for now: if user is logged in, use their role, else 'worker'
+  const role = user?.role || "worker";
 
   return (
     <div className="flex min-h-screen bg-slate-950">

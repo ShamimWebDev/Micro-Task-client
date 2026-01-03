@@ -52,7 +52,18 @@ const Sidebar = ({ role }) => {
     },
   ];
 
-  const links = role === "buyer" ? buyerLinks : workerLinks;
+  const adminLinks = [
+    { name: "Home", path: "/dashboard", icon: <FiHome /> },
+    { name: "Manage Users", path: "/dashboard/manage-users", icon: <FiList /> },
+    {
+      name: "Manage Tasks",
+      path: "/dashboard/manage-tasks",
+      icon: <FiCheckSquare />,
+    },
+  ];
+
+  const links =
+    role === "admin" ? adminLinks : role === "buyer" ? buyerLinks : workerLinks;
 
   return (
     <>

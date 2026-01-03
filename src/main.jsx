@@ -17,6 +17,8 @@ import MySubmissions from "./pages/MySubmissions";
 import PurchaseCoin from "./pages/PurchaseCoin";
 import Withdrawals from "./pages/Withdrawals";
 import PaymentHistory from "./pages/PaymentHistory";
+import ManageUsers from "./pages/ManageUsers";
+import ManageTasks from "./pages/ManageTasks";
 import AuthProvider from "./providers/AuthProvider";
 
 createRoot(document.getElementById("root")).render(
@@ -39,6 +41,8 @@ createRoot(document.getElementById("root")).render(
             <Route path="purchase-coin" element={<PurchaseCoin />} />
             <Route path="withdrawals" element={<Withdrawals />} />
             <Route path="payment-history" element={<PaymentHistory />} />
+            <Route path="manage-users" element={<ManageUsers />} />
+            <Route path="manage-tasks" element={<ManageTasks />} />
           </Route>
         </Routes>
       </BrowserRouter>

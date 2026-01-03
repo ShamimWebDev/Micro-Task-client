@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay, EffectFade } from "swiper/modules";
 import { motion } from "framer-motion";
-import { FaQuoteLeft } from "react-icons/fa";
+import { Quote, Star, CheckCircle2 } from "lucide-react";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -10,122 +10,159 @@ const Testimonials = () => {
   const testimonials = [
     {
       id: 1,
-      name: "Emily R.",
-      role: "Worker",
+      name: "Marcus Aurelius",
+      role: "Elite Worker",
       image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?fit=crop&w=150&q=80",
       quote:
-        "I've been working here for 6 months and have earned enough to pay my tuition. The best micro-tasking platform!",
+        "The platform's liquidity engine is revolutionary. I get paid as soon as my work is verified. Truly best-in-class.",
+      rating: 5,
     },
     {
       id: 2,
-      name: "Mark T.",
-      role: "Buyer",
+      name: "Elena Rodriguez",
+      role: "Boutique Buyer",
       image:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=150&q=80",
       quote:
-        "Posting tasks is super easy and the quality of work I get is amazing. Highly recommended for business owners.",
+        "Quality of work is consistently high. The vetted community of professionals here is unmatched in the industry.",
+      rating: 5,
     },
     {
       id: 3,
-      name: "Sophia L.",
-      role: "Worker",
+      name: "Jean-Pierre",
+      role: "Global Arbitrage",
       image:
-        "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?fit=crop&w=150&q=80",
       quote:
-        "Quick payments and helpful support. I love the variety of tasks available every day.",
+        "I've scaled my data operations by 400% using MicroTask. The infrastructure is robust and reliable.",
+      rating: 5,
     },
     {
       id: 4,
-      name: "David K.",
-      role: "Buyer",
+      name: "Aisha Khan",
+      role: "Verified Tasker",
       image:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?fit=crop&w=150&q=80",
       quote:
-        "This platform saved me so much time. I can outsource small tasks and focus on growing my business.",
+        "Finally a platform that respects the worker's time. Transparent rules and fair compensation for every mission.",
+      rating: 5,
     },
   ];
 
   return (
-    <section className="py-20 bg-slate-900 border-t border-slate-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-32 relative overflow-hidden">
+      {/* Background Section Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[500px] bg-indigo-600/5 blur-[150px] rounded-full pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          viewport={{ once: true }}
+          className="text-center mb-24"
         >
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
-            What Our <span className="text-gradient">Users Say</span>
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="w-12 h-[1px] bg-indigo-500" />
+            <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
+              Success Stories
+            </span>
+            <div className="w-12 h-[1px] bg-indigo-500" />
+          </div>
+          <h2 className="text-5xl md:text-6xl font-black text-white tracking-tight">
+            Trusted by <span className="text-gradient">visionaries</span>
           </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Don't just take our word for it. Read success stories from our
-            community of workers and buyers.
+          <p className="text-lg text-slate-500 mt-6 font-medium max-w-2xl mx-auto">
+            Our platform powers thousands of careers and businesses. Here is
+            what our most successful community members have to say.
           </p>
         </motion.div>
 
         <Swiper
           slidesPerView={1}
-          spaceBetween={30}
+          spaceBetween={40}
           pagination={{
             clickable: true,
+            dynamicBullets: true,
           }}
           autoplay={{
-            delay: 3000,
+            delay: 5000,
             disableOnInteraction: false,
           }}
           breakpoints={{
-            640: {
-              slidesPerView: 1,
-            },
-            768: {
-              slidesPerView: 2,
-            },
-            1024: {
-              slidesPerView: 3,
-            },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
           }}
           modules={[Pagination, Autoplay]}
-          className="pb-12"
+          className="!pb-20 testimonials-swiper"
         >
           {testimonials.map((testimonial) => (
             <SwiperSlide key={testimonial.id}>
-              <motion.div
-                whileHover={{ y: -5 }}
-                className="glass-card p-8 rounded-2xl h-full flex flex-col relative"
-              >
-                <FaQuoteLeft className="absolute top-6 right-6 text-4xl text-slate-700/50" />
+              <motion.div className="group h-[420px] glass-card p-10 rounded-[3rem] relative flex flex-col justify-between overflow-hidden border-white/5 hover:border-white/20">
+                {/* Accent Glow */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="flex items-center gap-4 mb-6">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="w-14 h-14 rounded-full border-2 border-indigo-500 object-cover"
+                <div className="relative z-10">
+                  <div className="flex items-center gap-1 mb-6">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star
+                        key={i}
+                        size={14}
+                        className="fill-yellow-500 text-yellow-500"
+                      />
+                    ))}
+                  </div>
+
+                  <Quote
+                    size={40}
+                    className="text-indigo-500/20 mb-6 group-hover:text-indigo-500/40 transition-colors"
                   />
+
+                  <p className="text-lg text-slate-300 font-medium leading-[1.6] line-clamp-5">
+                    "{testimonial.quote}"
+                  </p>
+                </div>
+
+                <div className="relative z-10 flex items-center gap-4 border-t border-slate-800/50 pt-8">
+                  <div className="relative w-14 h-14">
+                    <div className="absolute inset-0 bg-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40" />
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="relative w-full h-full rounded-2xl object-cover border border-white/10"
+                    />
+                  </div>
                   <div>
-                    <h4 className="text-lg font-bold text-white">
+                    <h4 className="font-black text-white flex items-center gap-1.5">
                       {testimonial.name}
+                      <CheckCircle2 size={14} className="text-indigo-400" />
                     </h4>
-                    <span
-                      className={`text-sm px-2 py-0.5 rounded-full ${
-                        testimonial.role === "Worker"
-                          ? "bg-indigo-500/20 text-indigo-300"
-                          : "bg-pink-500/20 text-pink-300"
-                      }`}
-                    >
+                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
                       {testimonial.role}
                     </span>
                   </div>
                 </div>
-
-                <p className="text-slate-300 italic grow">
-                  "{testimonial.quote}"
-                </p>
               </motion.div>
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
+
+      <style>{`
+        .testimonials-swiper .swiper-pagination-bullet {
+          background: #4f46e5 !important;
+          opacity: 0.2;
+          width: 8px;
+          height: 8px;
+          transition: all 0.3s ease;
+        }
+        .testimonials-swiper .swiper-pagination-bullet-active {
+          opacity: 1;
+          width: 32px;
+          border-radius: 4px;
+        }
+      `}</style>
     </section>
   );
 };

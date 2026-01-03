@@ -1,64 +1,80 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
-  FiHome,
-  FiPlusSquare,
-  FiList,
-  FiCheckSquare,
-  FiDollarSign,
-  FiClock,
-  FiMenu,
-  FiX,
-} from "react-icons/fi";
-import { useContext, useState } from "react";
+  Home,
+  PlusSquare,
+  LayoutList,
+  CheckCircle2,
+  Coins,
+  History,
+  Users,
+  Settings,
+  ChevronRight,
+  Sparkles,
+  LogOut,
+} from "lucide-react";
+import { useContext } from "react";
 import { AuthContext } from "../providers/AuthProvider";
+import { cn } from "../utils/cn";
 
 const Sidebar = ({ role }) => {
-  const { user } = useContext(AuthContext);
-  const [isOpen, setIsOpen] = useState(true);
+  const { user, logOut } = useContext(AuthContext);
+  const { pathname } = useLocation();
 
   const buyerLinks = [
-    { name: "Home", path: "/dashboard", icon: <FiHome /> },
+    { name: "Overview", path: "/dashboard", icon: <Home size={18} /> },
     {
-      name: "Add New Tasks",
+      name: "Add Task",
       path: "/dashboard/add-task",
-      icon: <FiPlusSquare />,
+      icon: <PlusSquare size={18} />,
     },
-    { name: "My Tasks", path: "/dashboard/my-tasks", icon: <FiList /> },
     {
-      name: "Purchase Coin",
+      name: "My Archive",
+      path: "/dashboard/my-tasks",
+      icon: <LayoutList size={18} />,
+    },
+    {
+      name: "Refill Coins",
       path: "/dashboard/purchase-coin",
-      icon: <FiDollarSign />,
+      icon: <Coins size={18} />,
     },
     {
-      name: "Payment History",
+      name: "Transactions",
       path: "/dashboard/payment-history",
-      icon: <FiClock />,
+      icon: <History size={18} />,
     },
   ];
 
-  // Placeholder for other roles
   const workerLinks = [
-    { name: "Home", path: "/dashboard", icon: <FiHome /> },
-    { name: "Task List", path: "/dashboard/task-list", icon: <FiList /> },
+    { name: "Overview", path: "/dashboard", icon: <Home size={18} /> },
     {
-      name: "My Submissions",
+      name: "Marketplace",
+      path: "/dashboard/task-list",
+      icon: <LayoutList size={18} />,
+    },
+    {
+      name: "Submissions",
       path: "/dashboard/my-submissions",
-      icon: <FiCheckSquare />,
+      icon: <CheckCircle2 size={18} />,
     },
     {
       name: "Withdrawals",
       path: "/dashboard/withdrawals",
-      icon: <FiDollarSign />,
+      icon: <Coins size={18} />,
     },
   ];
 
   const adminLinks = [
-    { name: "Home", path: "/dashboard", icon: <FiHome /> },
-    { name: "Manage Users", path: "/dashboard/manage-users", icon: <FiList /> },
+    { name: "Overview", path: "/dashboard", icon: <Home size={18} /> },
     {
-      name: "Manage Tasks",
+      name: "User Directory",
+      path: "/dashboard/manage-users",
+      icon: <Users size={18} />,
+    },
+    {
+      name: "Task Moderation",
       path: "/dashboard/manage-tasks",
-      icon: <FiCheckSquare />,
+      icon: <Settings size={18} />,
     },
   ];
 
@@ -66,69 +82,102 @@ const Sidebar = ({ role }) => {
     role === "admin" ? adminLinks : role === "buyer" ? buyerLinks : workerLinks;
 
   return (
-    <>
-      {/* Mobile Toggle */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-indigo-600 rounded-lg text-white"
-      >
-        {isOpen ? <FiX /> : <FiMenu />}
-      </button>
+    <aside className="w-72 h-screen fixed left-0 top-0 z-40 p-6 hidden lg:block">
+      <div className="h-full glass-card rounded-[2.5rem] flex flex-col border-white/5 shadow-2xl overflow-hidden">
+        {/* Branding Area */}
+        <div className="p-8 pb-4">
+          <Link to="/" className="group flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-aurora rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:rotate-12 transition-transform duration-500">
+              <span className="text-white font-black text-xl">M</span>
+            </div>
+            <span className="text-xl font-black tracking-tight text-white">
+              Micro<span className="text-indigo-400">Task</span>
+            </span>
+          </Link>
+        </div>
 
-      <aside
-        className={`
-                fixed inset-y-0 left-0 z-40 w-64 glass border-r border-slate-800 transition-transform duration-300 transform
-                ${isOpen ? "translate-x-0" : "-translate-x-full"}
-                lg:relative lg:translate-x-0
-            `}
-      >
-        <div className="flex flex-col h-full p-6">
-          <div className="mb-10 text-center">
-            <h2 className="text-2xl font-bold text-gradient mb-2">MicroTask</h2>
-            <div className="bg-slate-800/50 p-3 rounded-xl border border-slate-700">
-              <img
-                src={user?.photoURL}
-                alt={user?.displayName}
-                className="w-16 h-16 rounded-full mx-auto mb-3 border-2 border-indigo-500 object-cover"
-              />
-              <h3 className="text-white font-semibold truncate">
+        {/* User Card */}
+        <div className="px-6 py-8">
+          <div className="relative group p-6 glass rounded-3xl border-white/5 shadow-inner">
+            <div className="absolute top-2 right-2 text-indigo-400 animate-pulse">
+              <Sparkles size={14} />
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="relative mb-4">
+                <div className="absolute inset-0 bg-indigo-500 blur rounded-full opacity-20 group-hover:opacity-40 transition-opacity" />
+                <img
+                  src={user?.photoURL}
+                  alt={user?.displayName}
+                  className="relative w-16 h-16 rounded-2xl border-2 border-white/10 object-cover shadow-2xl"
+                />
+              </div>
+              <h3 className="text-white font-black text-sm text-center mb-1 truncate w-full">
                 {user?.displayName}
               </h3>
-              <p className="text-indigo-400 text-xs uppercase font-bold tracking-wider">
-                {role}
+              <p className="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase tracking-widest rounded-full border border-indigo-500/20">
+                {role} Protocol
               </p>
             </div>
           </div>
-
-          <nav className="flex-grow space-y-2">
-            {links.map((link) => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                end
-                className={({ isActive }) => `
-                                    flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
-                                    ${
-                                      isActive
-                                        ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/20"
-                                        : "text-slate-400 hover:bg-slate-800 hover:text-white"
-                                    }
-                                `}
-              >
-                <span className="text-xl">{link.icon}</span>
-                <span className="font-medium">{link.name}</span>
-              </NavLink>
-            ))}
-          </nav>
-
-          <div className="mt-auto pt-6 border-t border-slate-800">
-            <p className="text-xs text-slate-500 text-center uppercase tracking-widest">
-              Dashboard v1.0
-            </p>
-          </div>
         </div>
-      </aside>
-    </>
+
+        {/* Navigation */}
+        <nav className="flex-grow px-4 pb-8 overflow-y-auto space-y-1.5 custom-scrollbar">
+          {links.map((link) => (
+            <NavLink
+              key={link.path}
+              to={link.path}
+              end
+              className={({ isActive }) =>
+                cn(
+                  "group relative flex items-center gap-3 px-6 py-3.5 rounded-2xl text-sm font-bold transition-all duration-300",
+                  isActive
+                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20"
+                    : "text-slate-500 hover:text-white hover:bg-white/5"
+                )
+              }
+            >
+              <span
+                className={cn(
+                  "transition-transform duration-300 group-hover:scale-110",
+                  pathname === link.path ? "text-white" : "text-slate-400"
+                )}
+              >
+                {link.icon}
+              </span>
+              <span className="flex-grow">{link.name}</span>
+              {pathname === link.path && (
+                <motion.div
+                  layoutId="activeInd"
+                  className="absolute left-1 w-1 h-6 bg-white rounded-full"
+                />
+              )}
+              <ChevronRight
+                size={14}
+                className={cn(
+                  "opacity-0 group-hover:opacity-100 transition-all",
+                  pathname === link.path && "opacity-100"
+                )}
+              />
+            </NavLink>
+          ))}
+        </nav>
+
+        {/* Footer Actions */}
+        <div className="p-6 border-t border-slate-800/50">
+          <button
+            onClick={logOut}
+            className="w-full flex items-center justify-center gap-3 py-4 glass text-red-400 hover:bg-red-500/10 rounded-2xl border-white/5 font-black text-xs uppercase tracking-widest transition-all"
+          >
+            <LogOut size={16} />
+            Terminate Session
+          </button>
+          <p className="text-[9px] text-slate-600 text-center font-black uppercase tracking-widest mt-6">
+            MicroTask Core v2.4.0
+          </p>
+        </div>
+      </div>
+    </aside>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import { axiosPublic } from "./useAxios";
 
@@ -7,8 +7,9 @@ export const useUserData = () => {
   const [dbUser, setDbUser] = useState(null);
   const [isUserLoading, setIsUserLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchUserData = useCallback(() => {
     if (user?.email) {
+      setIsUserLoading(true);
       axiosPublic
         .get(`/users/role/${user.email}`)
         .then((res) => {
@@ -23,5 +24,14 @@ export const useUserData = () => {
     }
   }, [user]);
 
-  return [dbUser, isUserLoading];
+  useEffect(() => {
+    fetchUserData();
+  }, [fetchUserData]);
+
+  // Refetch function to update data after actions like payment
+  const refetch = () => {
+    fetchUserData();
+  };
+
+  return [dbUser, isUserLoading, refetch];
 };

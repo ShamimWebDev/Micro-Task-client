@@ -1,7 +1,19 @@
 import { useState, useEffect, useContext } from "react";
-import { FiTrash2 } from "react-icons/fi";
+import {
+  Trash2,
+  ShieldCheck,
+  UserCircle,
+  Mail,
+  Coins,
+  ChevronDown,
+  Search,
+  Users as UsersIcon,
+  Activity,
+} from "lucide-react";
 import { axiosSecure } from "../hooks/useAxios";
 import { AuthContext } from "../providers/AuthProvider";
+import { cn } from "../utils/cn";
+import { motion } from "framer-motion";
 
 const ManageUsers = () => {
   const { user: currentUser } = useContext(AuthContext);
@@ -22,26 +34,22 @@ const ManageUsers = () => {
   }, []);
 
   const handleRemoveUser = async (id) => {
-    if (
-      window.confirm(
-        "Are you sure you want to remove this user? This action cannot be undone."
-      )
-    ) {
+    if (window.confirm("Authorize permanent removal of this entity?")) {
       try {
         await axiosSecure.delete(`/users/${id}`);
         setUsers(users.filter((u) => u._id !== id));
-        alert("User removed from the system.");
       } catch (err) {
         console.error(err);
       }
     }
   };
 
-  const handleUpdateRole = async (id, newRole) => {
+  const handleUpdateRole = async (id, newRole, userEmail) => {
+    if (userEmail === currentUser?.email) return;
+
     try {
       await axiosSecure.patch(`/users/role/${id}`, { role: newRole });
       setUsers(users.map((u) => (u._id === id ? { ...u, role: newRole } : u)));
-      alert(`User role updated to ${newRole}`);
     } catch (err) {
       console.error(err);
     }
@@ -50,87 +58,175 @@ const ManageUsers = () => {
   if (loading) return null;
 
   return (
-    <div className="space-y-8 animate-fadeIn">
-      <header>
-        <h1 className="text-3xl font-bold text-white mb-2">Manage Users</h1>
-        <p className="text-slate-400">
-          View and manage all users on the platform.
-        </p>
-      </header>
+    <div className="space-y-12 pb-20">
+      {/* Executive Header */}
+      <motion.header
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="flex flex-col md:flex-row md:items-end justify-between gap-6"
+      >
+        <div>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-[1px] bg-indigo-500" />
+            <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
+              Directory Control
+            </span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+            User <span className="text-gradient">Intelligence</span>
+          </h1>
+        </div>
 
-      <div className="glass-card rounded-2xl overflow-hidden border border-slate-800">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="bg-slate-900/50 text-slate-400 text-xs uppercase tracking-widest font-bold">
-              <tr>
-                <th className="px-6 py-4">User</th>
-                <th className="px-6 py-4 text-center">Role</th>
-                <th className="px-6 py-4 text-center">Coins</th>
-                <th className="px-6 py-4 text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-800">
-              {users.map((user) => (
-                <tr
-                  key={user._id}
-                  className="hover:bg-slate-800/30 transition-colors"
-                >
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={user.photo || user.photoURL}
-                        alt={user.name}
-                        className="w-10 h-10 rounded-full object-cover border border-slate-700"
-                      />
-                      <div>
-                        <div className="text-white font-medium">
-                          {user.name}
+        <div className="flex items-center gap-4 bg-slate-900 shadow-2xl p-2 rounded-2xl border border-slate-800">
+          <div className="px-5 border-r border-slate-800">
+            <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">
+              Global Registry
+            </p>
+            <div className="flex items-center gap-2">
+              <UsersIcon size={14} className="text-indigo-400" />
+              <span className="text-xs font-black text-white uppercase tracking-wider text-[10px]">
+                {users.length} Active Profiles
+              </span>
+            </div>
+          </div>
+          <div className="relative group px-4">
+            <Search size={16} className="text-slate-600" />
+          </div>
+        </div>
+      </motion.header>
+
+      {/* Modern Table Container */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="relative"
+      >
+        <div className="absolute inset-0 bg-indigo-600/5 blur-[100px] rounded-full pointer-events-none" />
+
+        <div className="relative glass-card rounded-[2.5rem] border border-white/5 overflow-hidden shadow-2xl">
+          <div className="p-10 border-b border-white/5 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 glass rounded-xl flex items-center justify-center text-indigo-400">
+                <UserCircle size={20} />
+              </div>
+              <div>
+                <h2 className="text-xl font-black text-white">
+                  Registry Management
+                </h2>
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
+                  Permission and Access Control
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 bg-emerald-500/10 px-4 py-2 rounded-xl border border-emerald-500/20">
+              <Activity size={14} className="text-emerald-500" />
+              <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">
+                Real-time Delta Synchronized
+              </span>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b border-white/5">
+                  <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
+                    Profile Architecture
+                  </th>
+                  <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
+                    Operational Role
+                  </th>
+                  <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
+                    Credit Index
+                  </th>
+                  <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
+                    Session Controls
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5 font-medium">
+                {users.map((u) => (
+                  <tr
+                    key={u._id}
+                    className="group/row hover:bg-white/[0.02] transition-colors"
+                  >
+                    <td className="px-10 py-6">
+                      <div className="flex items-center gap-4">
+                        <div className="relative">
+                          <div className="absolute inset-0 bg-indigo-500 blur rounded-full opacity-0 group-hover/row:opacity-20 transition-opacity" />
+                          <img
+                            src={u.photo || u.photoURL}
+                            alt={u.name}
+                            className="relative w-12 h-12 rounded-2xl object-cover border-2 border-white/10 shadow-lg"
+                          />
                         </div>
-                        <div className="text-slate-500 text-xs italic">
-                          {user.email}
+                        <div className="flex flex-col">
+                          <span className="text-sm font-bold text-white mb-1 group-hover/row:text-indigo-400 transition-colors uppercase tracking-tight">
+                            {u.name}
+                          </span>
+                          <div className="flex items-center gap-1.5 text-slate-500">
+                            <Mail size={12} />
+                            <span className="text-[10px] font-bold font-mono lowercase">
+                              {u.email}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <select
-                      value={user.role}
-                      disabled={user.email === currentUser?.email}
-                      onChange={(e) =>
-                        handleUpdateRole(user._id, e.target.value)
-                      }
-                      className="bg-slate-900 border border-slate-700 disabled:opacity-50 disabled:cursor-not-allowed text-slate-300 text-xs font-bold px-3 py-1.5 rounded-lg focus:outline-none focus:border-indigo-500 cursor-pointer uppercase"
-                    >
-                      <option value="admin">Admin</option>
-                      <option value="buyer">Buyer</option>
-                      <option value="worker">Worker</option>
-                    </select>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <span className="text-yellow-400 font-bold">
-                      🪙 {user.coins}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-center">
-                    <button
-                      disabled={user.email === currentUser?.email}
-                      onClick={() => handleRemoveUser(user._id)}
-                      className="text-red-500 hover:text-white p-2 hover:bg-red-500/10 disabled:opacity-20 disabled:cursor-not-allowed rounded-xl transition-all border border-red-500/10"
-                      title={
-                        user.email === currentUser?.email
-                          ? "You cannot remove yourself"
-                          : "Remove User"
-                      }
-                    >
-                      <FiTrash2 size={18} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </td>
+                    <td className="px-10 py-6">
+                      <div className="flex justify-center">
+                        <div className="relative group/sel min-w-[120px]">
+                          <select
+                            value={u.role}
+                            disabled={u.email === currentUser?.email}
+                            onChange={(e) =>
+                              handleUpdateRole(u._id, e.target.value, u.email)
+                            }
+                            className={cn(
+                              "w-full bg-slate-900 border border-white/5 text-[10px] font-black uppercase tracking-widest px-4 py-2.5 rounded-xl appearance-none cursor-pointer focus:outline-none focus:border-indigo-500 transition-all",
+                              u.email === currentUser?.email &&
+                                "opacity-50 cursor-not-allowed"
+                            )}
+                          >
+                            <option value="admin">Level: Admin</option>
+                            <option value="buyer">Level: Buyer</option>
+                            <option value="worker">Level: Worker</option>
+                          </select>
+                          <ChevronDown
+                            size={14}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-600 pointer-events-none group-hover/sel:text-white transition-colors"
+                          />
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-10 py-6">
+                      <div className="flex items-center justify-center gap-2">
+                        <Coins size={14} className="text-yellow-500" />
+                        <span className="text-lg font-black text-yellow-500 tracking-tighter">
+                          {u.coins?.toLocaleString()}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-10 py-6">
+                      <div className="flex justify-center">
+                        <button
+                          disabled={u.email === currentUser?.email}
+                          onClick={() => handleRemoveUser(u._id)}
+                          className="w-10 h-10 glass rounded-xl flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-lg active:scale-95 disabled:opacity-20 disabled:cursor-not-allowed border-white/5"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

@@ -1,79 +1,120 @@
 import { motion } from "framer-motion";
 import {
-  FiUserPlus,
-  FiSearch,
-  FiCheckSquare,
-  FiDollarSign,
-} from "react-icons/fi";
+  UserPlus,
+  Search,
+  CheckSquare,
+  Wallet,
+  ArrowRight,
+} from "lucide-react";
 
 const HowItWorks = () => {
   const steps = [
     {
       id: 1,
-      icon: <FiUserPlus className="w-8 h-8" />,
-      title: "Register",
-      description: "Sign up for free and create your account in seconds.",
+      icon: <UserPlus className="w-6 h-6" />,
+      title: "Create Profile",
+      description:
+        "Initialize your professional identity in our high-trust network.",
+      color: "text-indigo-400",
+      glow: "shadow-indigo-500/20",
     },
     {
       id: 2,
-      icon: <FiSearch className="w-8 h-8" />,
-      title: "Find Tasks",
-      description: "Browse through hundreds of micro-tasks available.",
+      icon: <Search className="w-6 h-6" />,
+      title: "Discover Missions",
+      description:
+        "Navigate through a diverse landscape of verified micro-tasks.",
+      color: "text-pink-400",
+      glow: "shadow-pink-500/20",
     },
     {
       id: 3,
-      icon: <FiCheckSquare className="w-8 h-8" />,
-      title: "Complete Work",
-      description: "Submit your proof of work for the buyer to review.",
+      icon: <CheckSquare className="w-6 h-6" />,
+      title: "Execute & Submit",
+      description: "Deliver precision results and upload your digital proof.",
+      color: "text-emerald-400",
+      glow: "shadow-emerald-500/20",
     },
     {
       id: 4,
-      icon: <FiDollarSign className="w-8 h-8" />,
-      title: "Get Paid",
-      description: "Receive coins instantly after approval and withdraw.",
+      icon: <Wallet className="w-6 h-6" />,
+      title: "Instant Liquidity",
+      description: "Withdraw your earnings via our automated payout engine.",
+      color: "text-yellow-400",
+      glow: "shadow-yellow-500/20",
     },
   ];
 
   return (
-    <section className="py-20 bg-slate-800 border-t border-slate-700">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-32 relative overflow-hidden bg-slate-950/50">
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          viewport={{ once: true }}
+          className="text-center mb-24"
         >
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
-            How It <span className="text-gradient">Works</span>
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="w-12 h-[1px] bg-indigo-500" />
+            <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
+              Workflow
+            </span>
+            <div className="w-12 h-[1px] bg-indigo-500" />
+          </div>
+          <h2 className="text-5xl md:text-6xl font-black text-white tracking-tight">
+            How it <span className="text-gradient">works</span>
           </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Earning money has never been this simple. Follow these 4 easy steps
-            to start your journey.
+          <p className="text-lg text-slate-500 mt-6 font-medium max-w-2xl mx-auto">
+            Our streamlined ecosystem is designed for speed. From registration
+            to payout, experience a frictionless journey.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Steps Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 relative">
+          {/* Connecting Line (Desktop) */}
+          <div className="hidden lg:block absolute top-[52px] left-0 w-full h-[1px] bg-slate-800 z-0" />
+
           {steps.map((step, index) => (
             <motion.div
               key={step.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="relative"
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: index * 0.1 }}
+              className="relative z-10 text-center"
             >
-              <div className="glass-card p-8 rounded-2xl h-full text-center hover:bg-slate-700/50 transition-colors">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-500/20 text-indigo-400 mb-6 mx-auto">
+              {/* Icon Container */}
+              <div className={`relative w-24 h-24 mx-auto mb-10 group`}>
+                <div
+                  className={`absolute inset-0 bg-slate-900 rounded-[2rem] border border-slate-800 transition-all duration-500 group-hover:rotate-12 group-hover:border-white/20`}
+                />
+                <div
+                  className={`absolute inset-0 flex items-center justify-center ${step.color} transition-transform duration-500 group-hover:scale-110`}
+                >
                   {step.icon}
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">
-                  {step.title}
-                </h3>
-                <p className="text-slate-400">{step.description}</p>
+
+                {/* Number Badge */}
+                <div className="absolute -top-2 -right-2 w-8 h-8 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center text-white font-black text-xs shadow-2xl">
+                  0{step.id}
+                </div>
               </div>
 
-              {/* Connecting Line (Desktop only) */}
+              <h3 className="text-2xl font-black text-white mb-4">
+                {step.title}
+              </h3>
+
+              <p className="text-sm font-medium text-slate-500 leading-relaxed px-4">
+                {step.description}
+              </p>
+
+              {/* Mobile Mobile Indicator */}
               {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-slate-600 transform -translate-y-1/2"></div>
+                <div className="lg:hidden mt-8 flex justify-center text-slate-800">
+                  <ArrowRight size={24} className="rotate-90 md:rotate-0" />
+                </div>
               )}
             </motion.div>
           ))}

@@ -5,6 +5,8 @@ import "./index.css";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Leaderboard from "./pages/Leaderboard";
+import Contact from "./pages/Contact";
 import DashboardLayout from "./pages/DashboardLayout";
 import DashboardHome from "./pages/DashboardHome";
 import AddTask from "./pages/AddTask";
@@ -31,6 +33,8 @@ createRoot(document.getElementById("root")).render(
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
+          <Route path="/contact" element={<Contact />} />
 
           {/* Dashboard Routes - Protected */}
           <Route

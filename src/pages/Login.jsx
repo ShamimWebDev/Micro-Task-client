@@ -2,12 +2,24 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
 import { motion } from "framer-motion";
-import { FiMail, FiLock } from "react-icons/fi";
+import {
+  Mail,
+  Lock,
+  ChevronRight,
+  ShieldCheck,
+  Fingerprint,
+  Zap,
+  LogIn,
+} from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
+import { axiosPublic } from "../hooks/useAxios";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const Login = () => {
   const { signIn, signInWithGoogle } = useContext(AuthContext);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -16,97 +28,164 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
 
+    setLoading(true);
     setError("");
 
     try {
       await signIn(email, password);
       navigate("/");
     } catch (err) {
-      setError("Invalid email or password. Please try again.");
+      setError("Authorization Failed. Invalid credentials.");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
+    setLoading(true);
     try {
-      await signInWithGoogle();
+      const result = await signInWithGoogle();
+
+      // Save or update user in MongoDB
+      const userInfo = {
+        name: result.user.displayName,
+        email: result.user.email,
+        photo: result.user.photoURL,
+        role: "worker", // Default role for existing Google users
+        coins: 10, // Default coins for worker role
+        uid: result.user.uid,
+      };
+
+      // Try to save user (will return existing user if already exists)
+      await axiosPublic.post("/users", userInfo);
+
       navigate("/");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="max-w-md w-full glass-card p-8 rounded-3xl border border-slate-800"
-      >
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
-          <p className="text-slate-400">Sign in to your account to continue</p>
-        </div>
+    <div className="min-h-screen flex flex-col bg-slate-950">
+      <Navbar />
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Email */}
-          <div className="relative">
-            <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
-            <input
-              name="email"
-              type="email"
-              placeholder="Email Address"
-              required
-              className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-indigo-500 transition-colors"
-            />
-          </div>
+      <main className="flex-grow relative flex items-center justify-center overflow-hidden px-6 font-medium">
+        {/* Background Section Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[500px] bg-indigo-600/5 blur-[150px] rounded-full pointer-events-none" />
 
-          {/* Password */}
-          <div className="relative">
-            <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
-            <input
-              name="password"
-              type="password"
-              placeholder="Password"
-              required
-              className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-indigo-500 transition-colors"
-            />
-          </div>
-
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-indigo-500/20"
-          >
-            Login
-          </button>
-        </form>
-
-        <div className="relative my-8">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-800"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-slate-950 text-slate-500 font-medium">
-              Or continue with
-            </span>
-          </div>
-        </div>
-
-        <button
-          onClick={handleGoogleSignIn}
-          className="w-full bg-slate-900 border border-slate-700 hover:bg-slate-800 text-white font-medium py-3 rounded-xl transition-all flex items-center justify-center gap-2"
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          className="max-w-md w-full relative z-10"
         >
-          <FaGoogle className="text-red-500" /> Google
-        </button>
+          <div className="glass-card p-10 rounded-[3rem] border border-white/5 relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-3xl" />
 
-        <p className="mt-8 text-center text-slate-500 text-sm">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-indigo-400 hover:underline">
-            Register here
-          </Link>
-        </p>
-      </motion.div>
+            <div className="text-center mb-10">
+              <Link
+                to="/"
+                className="group inline-flex items-center gap-3 mb-8"
+              >
+                <div className="w-12 h-12 bg-gradient-aurora rounded-2xl flex items-center justify-center shadow-2xl shadow-indigo-500/20 group-hover:rotate-12 transition-transform duration-500">
+                  <span className="text-white font-black text-xl">M</span>
+                </div>
+              </Link>
+              <h2 className="text-3xl font-black text-white mb-2 tracking-tight">
+                Access Portal
+              </h2>
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                Authenticate to establish connection
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Email */}
+              <div className="relative group">
+                <Mail
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-indigo-400 transition-colors"
+                  size={18}
+                />
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Operator ID (Email)"
+                  required
+                  className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-4 text-white text-sm font-bold focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-700 shadow-inner"
+                />
+              </div>
+
+              {/* Password */}
+              <div className="relative group">
+                <Lock
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 group-focus-within:text-indigo-400 transition-colors"
+                  size={18}
+                />
+                <input
+                  name="password"
+                  type="password"
+                  placeholder="Access Key (Password)"
+                  required
+                  className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-4 text-white text-sm font-bold focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-700 shadow-inner"
+                />
+              </div>
+
+              {error && (
+                <p className="text-red-500 text-[10px] font-black uppercase tracking-widest text-center bg-red-500/10 p-3 rounded-xl border border-red-500/20">
+                  {error}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white font-black py-4 rounded-2xl transition-all shadow-xl shadow-indigo-600/10 text-xs uppercase tracking-[0.2em] active:scale-95 flex items-center justify-center gap-3 overflow-hidden"
+              >
+                {loading && <Zap className="animate-spin" size={16} />}
+                {loading ? "Authorizing..." : "Initialize Link"}
+              </button>
+            </form>
+
+            <div className="relative my-8">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-900"></div>
+              </div>
+              <div className="relative flex justify-center text-[10px]">
+                <span className="px-4 bg-slate-950 text-slate-600 font-black uppercase tracking-widest">
+                  OAuth Protocol
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={handleGoogleSignIn}
+              className="w-full bg-slate-900 border border-white/5 hover:bg-slate-800 text-white font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-3 active:scale-95 text-xs uppercase tracking-widest shadow-lg"
+            >
+              <FaGoogle className="text-red-500" /> Google Authentication
+            </button>
+
+            <div className="mt-10 pt-8 border-t border-white/5 flex flex-col items-center gap-6">
+              <div className="flex items-center gap-6 text-slate-600">
+                <Fingerprint size={20} />
+                <ShieldCheck size={20} />
+                <LogIn size={20} />
+              </div>
+              <p className="text-center text-slate-500 text-[10px] font-black uppercase tracking-widest">
+                Unverified?{" "}
+                <Link
+                  to="/register"
+                  className="text-indigo-400 hover:text-indigo-300 ml-1"
+                >
+                  Establish Identity
+                </Link>
+              </p>
+            </div>
+          </div>
+        </motion.div>
+      </main>
+
+      <Footer />
     </div>
   );
 };

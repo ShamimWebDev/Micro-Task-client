@@ -1,41 +1,37 @@
-import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { FiMenu, FiX, FiGithub, FiBell } from "react-icons/fi";
-import { useState, useContext, useEffect, useRef } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useContext, useEffect } from "react";
+import {
+  Menu,
+  X,
+  Github,
+  LogOut,
+  LayoutDashboard,
+  User,
+  Coins,
+  ChevronDown,
+  Bell,
+} from "lucide-react";
 import { AuthContext } from "../providers/AuthProvider";
-import { axiosSecure } from "../hooks/useAxios";
 import { useUserData } from "../hooks/useUserData";
+import NotificationDropdown from "./NotificationDropdown";
+import { cn } from "../utils/cn";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   const [dbUser] = useUserData();
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const coins = dbUser?.coins || 0;
 
-  const [isNotifyOpen, setIsNotifyOpen] = useState(false);
-  const notifyRef = useRef();
-
-  const [notifications, setNotifications] = useState([]);
-
   useEffect(() => {
-    if (user?.email) {
-      axiosSecure
-        .get(`/notifications/${user.email}`)
-        .then((res) => setNotifications(res.data))
-        .catch((err) => console.error(err));
-    }
-  }, [user]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (notifyRef.current && !notifyRef.current.contains(event.target)) {
-        setIsNotifyOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleLogout = async () => {
@@ -47,202 +43,253 @@ const Navbar = () => {
     }
   };
 
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Leaderboard", path: "/leaderboard" },
+    { name: "Contact", path: "/contact" },
+  ];
+
   return (
-    <nav className="fixed w-full z-50 glass">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+    <nav
+      className={cn(
+        "fixed w-full z-50 transition-all duration-500 px-4 py-4 md:px-8",
+        scrolled ? "py-3" : "py-6"
+      )}
+    >
+      <div
+        className={cn(
+          "max-w-7xl mx-auto rounded-2xl transition-all duration-500",
+          scrolled
+            ? "glass-nav shadow-2xl scale-[0.98] py-2 px-6"
+            : "bg-transparent py-2 px-0"
+        )}
+      >
+        <div className="flex items-center justify-between h-14">
+          {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="text-2xl font-bold text-gradient">
-              MicroTask
+            <Link to="/" className="group flex items-center gap-2">
+              <div className="w-10 h-10 bg-gradient-aurora rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:rotate-12 transition-transform duration-500">
+                <span className="text-white font-black text-xl">M</span>
+              </div>
+              <span className="text-2xl font-black tracking-tight text-white hidden sm:block">
+                Micro<span className="text-indigo-400">Task</span>
+              </span>
             </Link>
           </div>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8">
+            <div className="flex items-center gap-6">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className={cn(
+                    "text-sm font-medium transition-all duration-300 hover:text-indigo-400",
+                    pathname === link.path
+                      ? "text-indigo-400"
+                      : "text-slate-300"
+                  )}
+                >
+                  {link.name}
+                </Link>
+              ))}
+
+              {user && (
+                <Link
+                  to="/dashboard"
+                  className={cn(
+                    "text-sm font-medium transition-all duration-300 hover:text-indigo-400 flex items-center gap-2",
+                    pathname.startsWith("/dashboard")
+                      ? "text-indigo-400"
+                      : "text-slate-300"
+                  )}
+                >
+                  <LayoutDashboard size={16} />
+                  Dashboard
+                </Link>
+              )}
+            </div>
+
+            <div className="h-6 w-[1px] bg-slate-800" />
+
+            <div className="flex items-center gap-4">
               {!user ? (
-                <>
+                <div className="flex items-center gap-3">
                   <Link
                     to="/login"
-                    className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    className="text-sm font-semibold text-slate-300 hover:text-white px-4 py-2 transition-all"
                   >
                     Login
                   </Link>
                   <Link
                     to="/register"
-                    className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                    className="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-indigo-500/25 border border-indigo-500/50"
                   >
-                    Register
+                    Join Now
                   </Link>
-                </>
-              ) : (
-                <>
-                  <Link
-                    to="/dashboard"
-                    className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
-                  >
-                    Dashboard
-                  </Link>
-                  <span className="text-yellow-400 font-semibold px-3 py-2 text-sm flex items-center gap-1">
-                    🪙 {coins}
-                  </span>
-                </>
-              )}
-
-              <a
-                href="https://github.com/ShamimWebDev/Micro-Task-client"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 border border-slate-600"
-              >
-                <FiGithub /> Join as Developer
-              </a>
-
-              {user && (
-                <div className="relative" ref={notifyRef}>
-                  <button
-                    onClick={() => setIsNotifyOpen(!isNotifyOpen)}
-                    className="p-2 text-slate-400 hover:text-white transition-colors relative"
-                  >
-                    <FiBell size={20} />
-                    <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-slate-900"></span>
-                  </button>
-
-                  {/* Notification Pop-up */}
-                  {isNotifyOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      className="absolute right-0 mt-3 w-80 glass-card rounded-2xl border border-slate-800 shadow-2xl p-4 overflow-hidden"
-                    >
-                      <h4 className="text-white font-bold mb-4 px-2">
-                        Notifications
-                      </h4>
-                      <div className="space-y-3 max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-indigo-500/50 scrollbar-track-slate-900/50 hover:scrollbar-thumb-indigo-500">
-                        {notifications.map((n) => (
-                          <div
-                            key={n._id}
-                            className="p-3 bg-slate-900/50 rounded-xl border border-slate-800 hover:border-indigo-500/30 transition-all group cursor-pointer"
-                          >
-                            <p className="text-slate-300 text-xs leading-relaxed group-hover:text-white">
-                              {n.message}
-                            </p>
-                            <span className="text-slate-600 text-[10px] mt-2 block italic text-right">
-                              {new Date(n.time).toLocaleString()}
-                            </span>
-                          </div>
-                        ))}
-                        {notifications.length === 0 && (
-                          <p className="text-center text-slate-500 text-sm py-10 italic">
-                            No notifications yet.
-                          </p>
-                        )}
-                      </div>
-                      <button className="w-full text-center text-xs text-indigo-400 mt-4 font-bold hover:text-indigo-300 transition-colors">
-                        Mark all as read
-                      </button>
-                    </motion.div>
-                  )}
                 </div>
-              )}
+              ) : (
+                <div className="flex items-center gap-5">
+                  <div className="hidden lg:flex items-center gap-2 bg-slate-900/50 border border-slate-800 rounded-full px-4 py-1.5">
+                    <Coins size={16} className="text-yellow-400" />
+                    <span className="text-sm font-bold text-yellow-500">
+                      {coins}
+                    </span>
+                  </div>
 
-              {user && (
-                <div className="ml-4 flex items-center gap-3">
-                  <img
-                    className="h-8 w-8 rounded-full border border-gray-600 object-cover"
-                    src={user?.photoURL}
-                    alt={user?.displayName}
-                  />
-                  <button
-                    onClick={handleLogout}
-                    className="text-gray-400 hover:text-white text-sm font-medium transition-colors"
-                  >
-                    Logout
-                  </button>
+                  <NotificationDropdown userEmail={user.email} />
+
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowProfileMenu(!showProfileMenu)}
+                      className="flex items-center gap-2 p-1 rounded-full hover:bg-slate-800/50 transition-all border border-transparent hover:border-slate-800"
+                    >
+                      <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-indigo-500/30">
+                        <img
+                          src={user?.photoURL}
+                          alt={user?.displayName}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <ChevronDown
+                        size={16}
+                        className={cn(
+                          "text-slate-400 transition-transform duration-300",
+                          showProfileMenu && "rotate-180"
+                        )}
+                      />
+                    </button>
+
+                    {/* Profile Dropdown */}
+                    <AnimatePresence>
+                      {showProfileMenu && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          className="absolute right-0 mt-3 w-64 glass-card rounded-2xl p-2 shadow-2xl z-[60]"
+                        >
+                          <div className="px-4 py-3 border-b border-slate-800/50 mb-2">
+                            <p className="text-sm font-bold text-white truncate">
+                              {user.displayName}
+                            </p>
+                            <p className="text-xs text-slate-500 truncate">
+                              {user.email}
+                            </p>
+                          </div>
+
+                          <Link
+                            to="/dashboard"
+                            className="flex items-center gap-3 px-4 py-2 text-sm text-slate-300 hover:text-white hover:bg-indigo-600/10 rounded-xl transition-all"
+                            onClick={() => setShowProfileMenu(false)}
+                          >
+                            <LayoutDashboard
+                              size={18}
+                              className="text-indigo-400"
+                            />
+                            Dashboard
+                          </Link>
+
+                          <button
+                            onClick={handleLogout}
+                            className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-all"
+                          >
+                            <LogOut size={18} />
+                            Logout
+                          </button>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
               )}
             </div>
           </div>
 
           {/* Mobile menu button */}
-          <div className="-mr-2 flex md:hidden">
+          <div className="md:hidden flex items-center gap-4">
+            {user && (
+              <div className="flex items-center gap-2 bg-slate-900 px-3 py-1 rounded-full border border-slate-800">
+                <Coins size={14} className="text-yellow-400" />
+                <span className="text-xs font-black text-yellow-500">
+                  {coins}
+                </span>
+              </div>
+            )}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none"
+              className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400"
             >
-              {isOpen ? (
-                <FiX className="block h-6 w-6" />
-              ) : (
-                <FiMenu className="block h-6 w-6" />
-              )}
+              {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="md:hidden glass border-t border-gray-700"
-        >
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {!user ? (
-              <>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden glass rounded-3xl mt-4 overflow-hidden shadow-2xl border border-slate-800"
+          >
+            <div className="p-6 space-y-4">
+              {navLinks.map((link) => (
                 <Link
-                  to="/login"
-                  className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                  key={link.name}
+                  to={link.path}
+                  onClick={() => setIsOpen(false)}
+                  className="block text-lg font-medium text-slate-300 hover:text-white"
                 >
-                  Login
+                  {link.name}
                 </Link>
-                <Link
-                  to="/register"
-                  className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-                >
-                  Register
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link
-                  to="/dashboard"
-                  className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-                >
-                  Dashboard
-                </Link>
-                <div className="px-3 py-2">
-                  <span className="text-yellow-400 font-semibold text-sm">
-                    Available Coins: {coins}
-                  </span>
+              ))}
+
+              <div className="h-[1px] bg-slate-800 my-4" />
+
+              {!user ? (
+                <div className="grid grid-cols-2 gap-4">
+                  <Link
+                    to="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center py-3 rounded-2xl border border-slate-800 text-white font-bold"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center py-3 rounded-2xl bg-indigo-600 text-white font-bold"
+                  >
+                    Register
+                  </Link>
                 </div>
-                <div className="flex items-center gap-3 px-3 py-2">
-                  <img
-                    className="h-10 w-10 rounded-full border border-gray-600 object-cover"
-                    src={user?.photoURL}
-                    alt={user?.displayName}
-                  />
+              ) : (
+                <div className="space-y-4">
+                  <Link
+                    to="/dashboard"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center gap-3 py-3 text-slate-300"
+                  >
+                    <LayoutDashboard size={20} />
+                    Dashboard
+                  </Link>
                   <button
                     onClick={handleLogout}
-                    className="text-gray-400 hover:text-white text-sm font-medium transition-colors"
+                    className="flex items-center gap-3 py-3 text-red-400 w-full"
                   >
+                    <LogOut size={20} />
                     Logout
                   </button>
                 </div>
-              </>
-            )}
-            <a
-              href="https://github.com/ShamimWebDev/Micro-Task-client"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center gap-2"
-            >
-              <FiGithub /> Join as Developer
-            </a>
-          </div>
-        </motion.div>
-      )}
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FiTrash2 } from "react-icons/fi";
 import { axiosSecure } from "../hooks/useAxios";
+import { AuthContext } from "../providers/AuthProvider";
 
 const ManageUsers = () => {
+  const { user: currentUser } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -93,10 +95,11 @@ const ManageUsers = () => {
                   <td className="px-6 py-4 text-center">
                     <select
                       value={user.role}
+                      disabled={user.email === currentUser?.email}
                       onChange={(e) =>
                         handleUpdateRole(user._id, e.target.value)
                       }
-                      className="bg-slate-900 border border-slate-700 text-slate-300 text-xs font-bold px-3 py-1.5 rounded-lg focus:outline-none focus:border-indigo-500 cursor-pointer uppercase"
+                      className="bg-slate-900 border border-slate-700 disabled:opacity-50 disabled:cursor-not-allowed text-slate-300 text-xs font-bold px-3 py-1.5 rounded-lg focus:outline-none focus:border-indigo-500 cursor-pointer uppercase"
                     >
                       <option value="admin">Admin</option>
                       <option value="buyer">Buyer</option>
@@ -110,9 +113,14 @@ const ManageUsers = () => {
                   </td>
                   <td className="px-6 py-4 text-center">
                     <button
+                      disabled={user.email === currentUser?.email}
                       onClick={() => handleRemoveUser(user._id)}
-                      className="text-red-500 hover:text-white p-2 hover:bg-red-500/10 rounded-xl transition-all border border-red-500/10"
-                      title="Remove User"
+                      className="text-red-500 hover:text-white p-2 hover:bg-red-500/10 disabled:opacity-20 disabled:cursor-not-allowed rounded-xl transition-all border border-red-500/10"
+                      title={
+                        user.email === currentUser?.email
+                          ? "You cannot remove yourself"
+                          : "Remove User"
+                      }
                     >
                       <FiTrash2 size={18} />
                     </button>

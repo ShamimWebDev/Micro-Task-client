@@ -118,20 +118,25 @@ const Navbar = () => {
                       <h4 className="text-white font-bold mb-4 px-2">
                         Notifications
                       </h4>
-                      <div className="space-y-3 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+                      <div className="space-y-3 max-h-96 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-indigo-500/50 scrollbar-track-slate-900/50 hover:scrollbar-thumb-indigo-500">
                         {notifications.map((n) => (
                           <div
-                            key={n.id}
-                            className="p-3 bg-slate-900/50 rounded-xl border border-slate-800 hover:border-indigo-500/30 transition-all group"
+                            key={n._id}
+                            className="p-3 bg-slate-900/50 rounded-xl border border-slate-800 hover:border-indigo-500/30 transition-all group cursor-pointer"
                           >
                             <p className="text-slate-300 text-xs leading-relaxed group-hover:text-white">
                               {n.message}
                             </p>
-                            <span className="text-slate-600 text-[10px] mt-2 block italic">
-                              {n.date}
+                            <span className="text-slate-600 text-[10px] mt-2 block italic text-right">
+                              {new Date(n.time).toLocaleString()}
                             </span>
                           </div>
                         ))}
+                        {notifications.length === 0 && (
+                          <p className="text-center text-slate-500 text-sm py-10 italic">
+                            No notifications yet.
+                          </p>
+                        )}
                       </div>
                       <button className="w-full text-center text-xs text-indigo-400 mt-4 font-bold hover:text-indigo-300 transition-colors">
                         Mark all as read

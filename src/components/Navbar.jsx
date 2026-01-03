@@ -162,7 +162,7 @@ const Navbar = () => {
               href="https://github.com/ShamimWebDev/Micro-Task-client"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium flex items-center gap-2"
+              className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center gap-2"
             >
               <FiGithub /> Join as Developer
             </a>

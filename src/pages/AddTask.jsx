@@ -13,8 +13,11 @@ import {
 import { imageUpload } from "../utils/imageUpload";
 import { axiosSecure } from "../hooks/useAxios";
 
+import { useUserData } from "../hooks/useUserData";
+
 const AddTask = () => {
   const { user } = useContext(AuthContext);
+  const [dbUser, isUserLoading] = useUserData();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -32,11 +35,11 @@ const AddTask = () => {
     const image = form.image.files[0];
 
     const totalCost = required_workers * payable_amount;
-    const availableCoins = user?.coins || 100; // Mock coins if not found
+    const availableCoins = dbUser?.coins || 0;
 
     if (totalCost > availableCoins) {
       alert(
-        `Not available Coin. Purchase Coin. Total needed: 🪙 ${totalCost}, but you have 🪙 ${availableCoins}`
+        `Insufficient Coins. Total needed: 🪙 ${totalCost}, but you have 🪙 ${availableCoins}`
       );
       navigate("/dashboard/purchase-coin");
       setLoading(false);

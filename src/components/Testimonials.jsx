@@ -118,7 +118,7 @@ const Testimonials = () => {
                   </div>
                 </div>
 
-                <p className="text-slate-300 italic flex-grow">
+                <p className="text-slate-300 italic grow">
                   "{testimonial.quote}"
                 </p>
               </motion.div>

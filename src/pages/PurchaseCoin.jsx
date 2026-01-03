@@ -1,7 +1,14 @@
 import { motion } from "framer-motion";
 import { FiDollarSign, FiCheckCircle } from "react-icons/fi";
+import { useContext } from "react";
+import { AuthContext } from "../providers/AuthProvider";
+import { axiosSecure } from "../hooks/useAxios";
+import { useNavigate } from "react-router-dom";
 
 const PurchaseCoin = () => {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const packages = [
     { coins: 10, price: 1, color: "from-blue-500 to-indigo-500" },
     { coins: 150, price: 10, color: "from-indigo-500 to-purple-500" },
@@ -9,15 +16,30 @@ const PurchaseCoin = () => {
     { coins: 1000, price: 35, color: "from-pink-500 to-rose-500" },
   ];
 
-  const handlePurchase = (pkg) => {
+  const handlePurchase = async (pkg) => {
     const confirm = window.confirm(
       `Proceed to pay $${pkg.price} for ${pkg.coins} coins?`
     );
     if (confirm) {
-      alert(
-        `Payment of $${pkg.price} successful! Your balance has been updated with ${pkg.coins} coins.`
-      );
-      // Mock Navigate or Update
+      try {
+        const paymentInfo = {
+          email: user?.email,
+          coins: pkg.coins,
+          price: pkg.price,
+          date: new Date().toISOString(),
+          transactionId: `TXN-${Math.random()
+            .toString(36)
+            .substr(2, 9)
+            .toUpperCase()}`,
+        };
+        await axiosSecure.post("/payments", paymentInfo);
+        alert(
+          `Payment of $${pkg.price} successful! Your balance has been updated with ${pkg.coins} coins.`
+        );
+        navigate("/dashboard/payment-history");
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
@@ -43,7 +65,7 @@ const PurchaseCoin = () => {
             className="glass-card p-8 rounded-3xl border border-slate-800 flex flex-col items-center text-center relative hover:border-indigo-500/50 transition-all group"
           >
             <div
-              className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${pkg.color} flex items-center justify-center text-white text-3xl mb-6 shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform`}
+              className={`w-16 h-16 rounded-2xl bg-linear-to-br ${pkg.color} flex items-center justify-center text-white text-3xl mb-6 shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-transform`}
             >
               <FiDollarSign />
             </div>

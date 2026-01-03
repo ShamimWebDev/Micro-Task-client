@@ -1,64 +1,88 @@
 import { motion } from "framer-motion";
 import { FiBriefcase, FiClock, FiDollarSign, FiEye } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { axiosSecure } from "../hooks/useAxios";
+import { AuthContext } from "../providers/AuthProvider";
 
 const BuyerHome = () => {
-  // Mock States
+  const { user } = useContext(AuthContext);
+  const [statsData, setStatsData] = useState(null);
+  const [submissions, setSubmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (user?.email) {
+      const fetchData = async () => {
+        try {
+          const [statsRes, subRes] = await Promise.all([
+            axiosSecure.get(`/buyer-stats/${user.email}`),
+            axiosSecure.get(`/submissions/to-review/${user.email}`),
+          ]);
+          setStatsData(statsRes.data);
+          setSubmissions(subRes.data);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+    }
+  }, [user]);
+
+  const handleApprove = async (sub) => {
+    try {
+      await axiosSecure.patch(`/submissions/${sub._id}`, {
+        status: "approved",
+        payable_amount: sub.payable_amount,
+        workerEmail: sub.worker_email,
+        buyerName: user?.displayName,
+        taskTitle: sub.task_title,
+      });
+      setSubmissions(submissions.filter((s) => s._id !== sub._id));
+      alert("Submission Approved! Coins transferred to worker.");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleReject = async (sub) => {
+    try {
+      await axiosSecure.patch(`/submissions/${sub._id}`, {
+        status: "rejected",
+        workerEmail: sub.worker_email,
+        buyerName: user?.displayName,
+        taskTitle: sub.task_title,
+      });
+      setSubmissions(submissions.filter((s) => s._id !== sub._id));
+      alert("Submission Rejected! Required workers count increased.");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  if (loading) return null;
+
   const stats = [
     {
       label: "Total Tasks",
-      value: 12,
+      value: statsData?.totalTaskCount || 0,
       icon: <FiBriefcase />,
       color: "bg-indigo-500",
     },
     {
       label: "Pending Workers",
-      value: 450,
+      value: statsData?.pendingTaskCount || 0,
       icon: <FiClock />,
       color: "bg-pink-500",
     },
     {
       label: "Total Paid",
-      value: "$1,250",
+      value: `🪙 ${statsData?.totalPaymentPaid || 0}`,
       icon: <FiDollarSign />,
       color: "bg-emerald-500",
     },
   ];
-
-  // Mock Submissions
-  const [submissions, setSubmissions] = useState([
-    {
-      id: 1,
-      worker_name: "Alice Smith",
-      task_title: "Watch YT Video",
-      payable_amount: 10,
-      status: "pending",
-    },
-    {
-      id: 2,
-      worker_name: "Bob Jones",
-      task_title: "Social Share",
-      payable_amount: 15,
-      status: "pending",
-    },
-    {
-      id: 3,
-      worker_name: "Charlie Brown",
-      task_title: "App Review",
-      payable_amount: 50,
-      status: "pending",
-    },
-  ]);
-
-  const handleApprove = (id) => {
-    setSubmissions(submissions.filter((s) => s.id !== id));
-    alert("Submission Approved! Coins transferred to worker.");
-  };
-
-  const handleReject = (id) => {
-    setSubmissions(submissions.filter((s) => s.id !== id));
-    alert("Submission Rejected! Required workers count increased.");
-  };
 
   return (
     <div className="space-y-10 animate-fadeIn">
@@ -114,7 +138,7 @@ const BuyerHome = () => {
             <tbody className="divide-y divide-slate-800">
               {submissions.map((sub) => (
                 <tr
-                  key={sub.id}
+                  key={sub._id}
                   className="hover:bg-slate-800/30 transition-colors"
                 >
                   <td className="px-6 py-4 text-white font-medium">
@@ -133,13 +157,13 @@ const BuyerHome = () => {
                         <FiEye size={18} />
                       </button>
                       <button
-                        onClick={() => handleApprove(sub.id)}
+                        onClick={() => handleApprove(sub)}
                         className="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
                       >
                         Approve
                       </button>
                       <button
-                        onClick={() => handleReject(sub.id)}
+                        onClick={() => handleReject(sub)}
                         className="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white text-xs font-bold px-3 py-1.5 rounded-lg border border-red-500/20 transition-all"
                       >
                         Reject
@@ -152,7 +176,7 @@ const BuyerHome = () => {
                 <tr>
                   <td
                     colSpan="4"
-                    className="px-6 py-10 text-center text-slate-500"
+                    className="px-6 py-10 text-center text-slate-500 italic"
                   >
                     No pending submissions found.
                   </td>

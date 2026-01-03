@@ -4,14 +4,15 @@ import { FiMenu, FiX, FiGithub, FiBell } from "react-icons/fi";
 import { useState, useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import { axiosSecure } from "../hooks/useAxios";
+import { useUserData } from "../hooks/useUserData";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
+  const [dbUser] = useUserData();
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
-  // Default coins if not in user object yet (should be fetched from DB)
-  const coins = user?.coins || 10;
+  const coins = dbUser?.coins || 0;
 
   const [isNotifyOpen, setIsNotifyOpen] = useState(false);
   const notifyRef = useRef();

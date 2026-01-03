@@ -1,50 +1,51 @@
-import { useState } from "react";
-import { FiTrash2, FiUser } from "react-icons/fi";
+import { useState, useEffect } from "react";
+import { FiTrash2 } from "react-icons/fi";
+import { axiosSecure } from "../hooks/useAxios";
 
 const ManageUsers = () => {
-  // Mock Users Data
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      display_name: "Alice Smith",
-      user_email: "alice@example.com",
-      photo_url: "https://ui-avatars.com/api/?name=Alice+Smith",
-      role: "worker",
-      coins: 450,
-    },
-    {
-      id: 2,
-      display_name: "John Buyer",
-      user_email: "john@buyer.com",
-      photo_url: "https://ui-avatars.com/api/?name=John+Buyer",
-      role: "buyer",
-      coins: 1200,
-    },
-    {
-      id: 3,
-      display_name: "Super Admin",
-      user_email: "admin@microtask.com",
-      photo_url: "https://ui-avatars.com/api/?name=Super+Admin",
-      role: "admin",
-      coins: 50,
-    },
-  ]);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleRemoveUser = (id) => {
+  useEffect(() => {
+    axiosSecure
+      .get("/users")
+      .then((res) => {
+        setUsers(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  const handleRemoveUser = async (id) => {
     if (
       window.confirm(
         "Are you sure you want to remove this user? This action cannot be undone."
       )
     ) {
-      setUsers(users.filter((u) => u.id !== id));
-      alert("User removed from the system.");
+      try {
+        await axiosSecure.delete(`/users/${id}`);
+        setUsers(users.filter((u) => u._id !== id));
+        alert("User removed from the system.");
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
-  const handleUpdateRole = (id, newRole) => {
-    setUsers(users.map((u) => (u.id === id ? { ...u, role: newRole } : u)));
-    alert(`User role updated to ${newRole}`);
+  const handleUpdateRole = async (id, newRole) => {
+    try {
+      await axiosSecure.patch(`/users/role/${id}`, { role: newRole });
+      setUsers(users.map((u) => (u._id === id ? { ...u, role: newRole } : u)));
+      alert(`User role updated to ${newRole}`);
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  if (loading) return null;
 
   return (
     <div className="space-y-8 animate-fadeIn">
@@ -69,22 +70,22 @@ const ManageUsers = () => {
             <tbody className="divide-y divide-slate-800">
               {users.map((user) => (
                 <tr
-                  key={user.id}
+                  key={user._id}
                   className="hover:bg-slate-800/30 transition-colors"
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       <img
-                        src={user.photo_url}
-                        alt={user.display_name}
+                        src={user.photo || user.photoURL}
+                        alt={user.name}
                         className="w-10 h-10 rounded-full object-cover border border-slate-700"
                       />
                       <div>
                         <div className="text-white font-medium">
-                          {user.display_name}
+                          {user.name}
                         </div>
                         <div className="text-slate-500 text-xs italic">
-                          {user.user_email}
+                          {user.email}
                         </div>
                       </div>
                     </div>
@@ -93,7 +94,7 @@ const ManageUsers = () => {
                     <select
                       value={user.role}
                       onChange={(e) =>
-                        handleUpdateRole(user.id, e.target.value)
+                        handleUpdateRole(user._id, e.target.value)
                       }
                       className="bg-slate-900 border border-slate-700 text-slate-300 text-xs font-bold px-3 py-1.5 rounded-lg focus:outline-none focus:border-indigo-500 cursor-pointer uppercase"
                     >
@@ -109,7 +110,7 @@ const ManageUsers = () => {
                   </td>
                   <td className="px-6 py-4 text-center">
                     <button
-                      onClick={() => handleRemoveUser(user.id)}
+                      onClick={() => handleRemoveUser(user._id)}
                       className="text-red-500 hover:text-white p-2 hover:bg-red-500/10 rounded-xl transition-all border border-red-500/10"
                       title="Remove User"
                     >

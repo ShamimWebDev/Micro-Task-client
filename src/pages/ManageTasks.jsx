@@ -1,45 +1,41 @@
-import { useState } from "react";
-import { FiTrash2, FiUser, FiCalendar } from "react-icons/fi";
+import { useState, useEffect } from "react";
+import { FiTrash2, FiCalendar } from "react-icons/fi";
+import { axiosSecure } from "../hooks/useAxios";
 
 const ManageTasks = () => {
-  // Mock Tasks Data
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Watch YT Video",
-      buyer_name: "Creative Labs",
-      required_workers: 80,
-      payable_amount: 15,
-      completion_date: "2026-02-15",
-    },
-    {
-      id: 2,
-      title: "Download App",
-      buyer_name: "Game Studio",
-      required_workers: 15,
-      payable_amount: 45,
-      completion_date: "2026-03-01",
-    },
-    {
-      id: 3,
-      title: "Share Post",
-      buyer_name: "Startup Hub",
-      required_workers: 120,
-      payable_amount: 10,
-      completion_date: "2026-02-28",
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleDeleteTask = (id) => {
+  useEffect(() => {
+    axiosSecure
+      .get("/tasks")
+      .then((res) => {
+        setTasks(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  const handleDeleteTask = async (id) => {
     if (
       window.confirm(
         "Are you sure you want to delete this task? This will remove it from all workers' lists."
       )
     ) {
-      setTasks(tasks.filter((t) => t.id !== id));
-      alert("Task deleted successfully.");
+      try {
+        await axiosSecure.delete(`/tasks/${id}`);
+        setTasks(tasks.filter((t) => t._id !== id));
+        alert("Task deleted successfully.");
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
+
+  if (loading) return null;
 
   return (
     <div className="space-y-8 animate-fadeIn">
@@ -65,12 +61,12 @@ const ManageTasks = () => {
             <tbody className="divide-y divide-slate-800">
               {tasks.map((task) => (
                 <tr
-                  key={task.id}
+                  key={task._id}
                   className="hover:bg-slate-800/30 transition-colors"
                 >
                   <td className="px-6 py-4">
                     <div className="text-white font-medium text-sm">
-                      {task.title}
+                      {task.task_title}
                     </div>
                     <div className="text-slate-500 text-[10px] flex items-center gap-1 mt-1">
                       <FiCalendar /> Deadline: {task.completion_date}
@@ -89,7 +85,7 @@ const ManageTasks = () => {
                   </td>
                   <td className="px-6 py-4 text-center">
                     <button
-                      onClick={() => handleDeleteTask(task.id)}
+                      onClick={() => handleDeleteTask(task._id)}
                       className="text-red-500 hover:text-white p-2 hover:bg-red-500/10 rounded-xl transition-all border border-red-500/10"
                       title="Delete Task"
                     >
@@ -98,6 +94,16 @@ const ManageTasks = () => {
                   </td>
                 </tr>
               ))}
+              {tasks.length === 0 && (
+                <tr>
+                  <td
+                    colSpan="5"
+                    className="px-6 py-10 text-center text-slate-500 italic"
+                  >
+                    No tasks found.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

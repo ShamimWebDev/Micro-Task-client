@@ -1,56 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
+import { axiosSecure } from "../hooks/useAxios";
+import { AuthContext } from "../providers/AuthProvider";
 
 const MyTasks = () => {
-  // Mock Tasks
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "YouTube Subscribtion",
-      required_workers: 50,
-      payable_amount: 10,
-      completion_date: "2026-05-20",
-    },
-    {
-      id: 2,
-      title: "App Download",
-      required_workers: 20,
-      payable_amount: 100,
-      completion_date: "2026-04-15",
-    },
-    {
-      id: 3,
-      title: "Social Media Share",
-      required_workers: 100,
-      payable_amount: 5,
-      completion_date: "2026-03-10",
-    },
-  ]);
+  const { user } = useContext(AuthContext);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleDelete = (id) => {
+  useEffect(() => {
+    if (user?.email) {
+      axiosSecure
+        .get(`/my-tasks/${user.email}`)
+        .then((res) => {
+          setTasks(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setLoading(false);
+        });
+    }
+  }, [user]);
+
+  const handleDelete = async (id) => {
     if (
       window.confirm(
         "Are you sure you want to delete this task? Coins for uncompleted spots will be refilled."
       )
     ) {
-      setTasks(tasks.filter((t) => t.id !== id));
-      alert("Task deleted and coins refilled!");
+      try {
+        await axiosSecure.delete(`/tasks/${id}`);
+        setTasks(tasks.filter((t) => t._id !== id));
+        alert("Task deleted and coins refilled!");
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
-  const handleUpdate = (task) => {
-    const newTitle = prompt("Enter new title:", task.title);
+  const handleUpdate = async (task) => {
+    // For simplicity, using prompt, but ideally a modal
+    const newTitle = prompt("Enter new title:", task.task_title);
     if (newTitle) {
-      setTasks(
-        tasks.map((t) => (t.id === task.id ? { ...t, title: newTitle } : t))
+      // TODO: Implement update API on server
+      alert(
+        "Update feature simplified: Refresh to see changes (needs server PATCH)"
       );
     }
   };
 
-  // Sort tasks in descending order of completion date
-  const sortedTasks = [...tasks].sort(
-    (a, b) => new Date(b.completion_date) - new Date(a.completion_date)
-  );
+  if (loading) return null;
 
   return (
     <div className="space-y-8 animate-fadeIn">
@@ -69,27 +69,27 @@ const MyTasks = () => {
                 <th className="px-6 py-4 font-semibold">Task Title</th>
                 <th className="px-6 py-4 font-semibold">Workers</th>
                 <th className="px-6 py-4 font-semibold">Amount</th>
-                <th className="px-6 py-4 font-semibold">Status</th>
+                <th className="px-6 py-4 font-semibold text-center">Status</th>
                 <th className="px-6 py-4 font-semibold">Deadline</th>
                 <th className="px-6 py-4 font-semibold text-center">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800 uppercase text-xs font-bold">
-              {sortedTasks.map((task) => (
+            <tbody className="divide-y divide-slate-800 uppercase text-[10px] font-bold">
+              {tasks.map((task) => (
                 <tr
-                  key={task.id}
+                  key={task._id}
                   className="hover:bg-slate-800/30 transition-colors"
                 >
                   <td className="px-6 py-4 text-white font-medium normal-case text-sm">
-                    {task.title}
+                    {task.task_title}
                   </td>
                   <td className="px-6 py-4 text-slate-400">
                     {task.required_workers}
                   </td>
-                  <td className="px-6 py-4 text-yellow-500">
+                  <td className="px-6 py-4 text-yellow-500 font-bold">
                     🪙 {task.payable_amount}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 text-center">
                     <span className="bg-emerald-500/10 text-emerald-400 px-2 py-1 rounded border border-emerald-500/20">
                       Active
                     </span>
@@ -107,7 +107,7 @@ const MyTasks = () => {
                         <FiEdit2 size={16} />
                       </button>
                       <button
-                        onClick={() => handleDelete(task.id)}
+                        onClick={() => handleDelete(task._id)}
                         className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors border border-red-500/10"
                         title="Delete Task"
                       >
@@ -117,6 +117,16 @@ const MyTasks = () => {
                   </td>
                 </tr>
               ))}
+              {tasks.length === 0 && (
+                <tr>
+                  <td
+                    colSpan="6"
+                    className="px-6 py-10 text-center text-slate-500 italic"
+                  >
+                    No tasks added by you yet.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

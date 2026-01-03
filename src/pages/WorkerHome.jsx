@@ -1,51 +1,60 @@
 import { motion } from "framer-motion";
 import { FiCheckCircle, FiClock, FiDollarSign } from "react-icons/fi";
+import { useState, useEffect, useContext } from "react";
+import { axiosSecure } from "../hooks/useAxios";
+import { AuthContext } from "../providers/AuthProvider";
 
 const WorkerHome = () => {
-  // Mock States for Worker
+  const { user } = useContext(AuthContext);
+  const [statsData, setStatsData] = useState(null);
+  const [approvedSubmissions, setApprovedSubmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (user?.email) {
+      const fetchData = async () => {
+        try {
+          const [statsRes, subRes] = await Promise.all([
+            axiosSecure.get(`/worker-stats/${user.email}`),
+            axiosSecure.get(
+              `/my-submissions?email=${user.email}&status=approved`
+            ),
+          ]);
+          setStatsData(statsRes.data);
+          // Filtering for approved on client for now if API doesn't filter perfectly
+          setApprovedSubmissions(
+            subRes.data.result.filter((s) => s.status === "approved")
+          );
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+    }
+  }, [user]);
+
+  if (loading) return null;
+
   const stats = [
     {
       label: "Total Submissions",
-      value: 25,
+      value: statsData?.totalSubmission || 0,
       icon: <FiCheckCircle />,
       color: "bg-indigo-500",
     },
     {
       label: "Pending Submissions",
-      value: 8,
+      value: statsData?.pendingSubmission || 0,
       icon: <FiClock />,
       color: "bg-yellow-500",
     },
     {
       label: "Total Earning",
-      value: "🪙 450",
+      value: `🪙 ${statsData?.totalEarning || 0}`,
       icon: <FiDollarSign />,
       color: "bg-emerald-500",
-    },
-  ];
-
-  // Mock Approved Submissions
-  const approvedSubmissions = [
-    {
-      id: 1,
-      task_title: "Watch YT Video",
-      payable_amount: 10,
-      buyer_name: "John Buyer",
-      status: "approved",
-    },
-    {
-      id: 2,
-      task_title: "Social Share",
-      payable_amount: 15,
-      buyer_name: "Sarah Admin",
-      status: "approved",
-    },
-    {
-      id: 3,
-      task_title: "App Review",
-      payable_amount: 50,
-      buyer_name: "Mike Dev",
-      status: "approved",
     },
   ];
 
@@ -88,31 +97,43 @@ const WorkerHome = () => {
             <thead className="bg-slate-900/50 text-slate-400 text-xs uppercase tracking-wider">
               <tr>
                 <th className="px-6 py-4 font-semibold">Task Title</th>
-                <th className="px-6 py-4 font-semibold">Payable Amount</th>
+                <th className="px-6 py-4 font-semibold text-center">
+                  Payable Amount
+                </th>
                 <th className="px-6 py-4 font-semibold">Buyer Name</th>
-                <th className="px-6 py-4 font-semibold">Status</th>
+                <th className="px-6 py-4 font-semibold text-center">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-800">
               {approvedSubmissions.map((sub) => (
                 <tr
-                  key={sub.id}
+                  key={sub._id}
                   className="hover:bg-slate-800/30 transition-colors"
                 >
                   <td className="px-6 py-4 text-white font-medium">
                     {sub.task_title}
                   </td>
-                  <td className="px-6 py-4 text-emerald-400 font-bold">
+                  <td className="px-6 py-4 text-emerald-400 font-bold text-center">
                     🪙 {sub.payable_amount}
                   </td>
                   <td className="px-6 py-4 text-slate-300">{sub.buyer_name}</td>
-                  <td className="px-6 py-4">
-                    <span className="bg-emerald-500/10 text-emerald-400 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/20">
+                  <td className="px-6 py-4 text-center">
+                    <span className="bg-emerald-500/10 text-emerald-400 text-[10px] uppercase font-bold px-3 py-1 rounded-full border border-emerald-500/20 tracking-wider">
                       {sub.status}
                     </span>
                   </td>
                 </tr>
               ))}
+              {approvedSubmissions.length === 0 && (
+                <tr>
+                  <td
+                    colSpan="4"
+                    className="px-6 py-10 text-center text-slate-500 italic"
+                  >
+                    No approved submissions yet.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

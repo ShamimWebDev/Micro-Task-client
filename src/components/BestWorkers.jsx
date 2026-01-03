@@ -1,52 +1,26 @@
 import { motion } from "framer-motion";
 import { FiDollarSign } from "react-icons/fi";
+import { useEffect, useState } from "react";
+import { axiosPublic } from "../hooks/useAxios";
 
 const BestWorkers = () => {
-  // Mock data for top workers
-  const workers = [
-    {
-      id: 1,
-      name: "Sarah Johnson",
-      coins: 15420,
-      image:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
-    },
-    {
-      id: 2,
-      name: "Michael Chen",
-      coins: 12350,
-      image:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
-    },
-    {
-      id: 3,
-      name: "Emily Davis",
-      coins: 11200,
-      image:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
-    },
-    {
-      id: 4,
-      name: "David Wilson",
-      coins: 9800,
-      image:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
-    },
-    {
-      id: 5,
-      name: "Jessica Brown",
-      coins: 8950,
-      image:
-        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
-    },
-    {
-      id: 6,
-      name: "James Taylor",
-      coins: 7600,
-      image:
-        "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&auto=format&fit=crop&w=256&q=80",
-    },
-  ];
+  const [workers, setWorkers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axiosPublic
+      .get("/top-workers")
+      .then((res) => {
+        setWorkers(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return null;
 
   return (
     <section className="py-20 bg-slate-900 border-t border-slate-800">
@@ -69,20 +43,24 @@ const BestWorkers = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {workers.map((worker, index) => (
             <motion.div
-              key={worker.id}
+              key={worker._id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="glass-card rounded-2xl p-6 flex flex-col items-center hover:transform hover:scale-105 transition-all duration-300"
+              className="glass-card rounded-2xl p-6 flex flex-col items-center hover:transform hover:scale-105 transition-all duration-300 shadow-xl"
             >
               <div className="relative mb-6">
-                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-pink-500 rounded-full blur opacity-50"></div>
+                <div className="absolute inset-0 bg-linear-to-r from-indigo-500 to-pink-500 rounded-full blur opacity-50"></div>
                 <img
-                  src={worker.image}
+                  src={
+                    worker.photo ||
+                    worker.photoURL ||
+                    `https://ui-avatars.com/api/?name=${worker.name}&background=random`
+                  }
                   alt={worker.name}
                   className="relative w-24 h-24 rounded-full border-2 border-white/20 object-cover"
                 />
-                <div className="absolute -bottom-2 -right-2 bg-yellow-400 text-slate-900 text-xs font-bold px-2 py-1 rounded-full flex items-center">
+                <div className="absolute -bottom-2 -right-2 bg-yellow-400 text-slate-900 text-xs font-bold px-2 py-1 rounded-full flex items-center shadow-lg">
                   #{index + 1}
                 </div>
               </div>
@@ -91,16 +69,21 @@ const BestWorkers = () => {
                 {worker.name}
               </h3>
 
-              <div className="flex items-center gap-2 bg-slate-800/50 px-4 py-2 rounded-full border border-slate-700">
+              <div className="flex items-center gap-2 bg-slate-800/50 px-4 py-2 rounded-full border border-slate-700 shadow-inner">
                 <span className="flex items-center justify-center w-6 h-6 rounded-full bg-yellow-400/20 text-yellow-400">
                   <FiDollarSign className="w-4 h-4" />
                 </span>
                 <span className="text-yellow-400 font-bold">
-                  {worker.coins.toLocaleString()} Coins
+                  {worker.coins?.toLocaleString() || 0} Coins
                 </span>
               </div>
             </motion.div>
           ))}
+          {workers.length === 0 && (
+            <div className="col-span-full text-center py-20 text-slate-500 italic">
+              No workers found yet.
+            </div>
+          )}
         </div>
       </div>
     </section>

@@ -1,40 +1,32 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import { motion } from "framer-motion";
 import { FiArrowLeft, FiSend, FiFileText } from "react-icons/fi";
+import { axiosSecure } from "../hooks/useAxios";
 
 const TaskDetails = () => {
   const { id } = useParams();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [task, setTask] = useState(null);
 
-  // Mock Task Info (Ideally fetched from backend using id)
-  const task = {
-    id: id,
-    title: "Watch and Comment on YouTube",
-    detail:
-      "Please watch the video for at least 3 minutes, like it, and leave a sensible comment about the content. Avoid generic comments like 'nice video'.",
-    required_workers: 80,
-    payable_amount: 15,
-    completion_date: "2026-02-15",
-    submission_info:
-      "Include your YouTube username and a link to your comment.",
-    image_url:
-      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1074&auto=format&fit=crop",
-    buyer_name: "Creative Labs",
-    buyer_email: "creative@labs.com",
-  };
+  useEffect(() => {
+    axiosSecure
+      .get(`/tasks/${id}`)
+      .then((res) => setTask(res.data))
+      .catch((err) => console.error(err));
+  }, [id]);
 
-  const handleSubmission = (e) => {
+  const handleSubmission = async (e) => {
     e.preventDefault();
     setLoading(true);
     const details = e.target.submission_Details.value;
 
     const submissionData = {
-      task_id: task.id,
-      task_title: task.title,
+      task_id: task._id,
+      task_title: task.task_title,
       payable_amount: task.payable_amount,
       worker_email: user?.email,
       worker_name: user?.displayName,
@@ -45,15 +37,18 @@ const TaskDetails = () => {
       status: "pending",
     };
 
-    console.log("Submitting work:", submissionData);
-
-    // Mock API call
-    setTimeout(() => {
+    try {
+      await axiosSecure.post("/submissions", submissionData);
       alert("Work submitted successfully! Waiting for buyer approval.");
       navigate("/dashboard/my-submissions");
+    } catch (err) {
+      console.error(err);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
+
+  if (!task) return null;
 
   return (
     <div className="max-w-4xl mx-auto py-6 space-y-8 animate-fadeIn">
@@ -72,16 +67,18 @@ const TaskDetails = () => {
           className="glass-card p-8 rounded-3xl border border-slate-800"
         >
           <img
-            src={task.image_url}
-            alt={task.title}
-            className="w-full h-48 object-cover rounded-2xl mb-6"
+            src={task.task_image_url}
+            alt={task.task_title}
+            className="w-full h-48 object-cover rounded-2xl mb-6 shadow-2xl"
           />
-          <h1 className="text-2xl font-bold text-white mb-4">{task.title}</h1>
+          <h1 className="text-2xl font-bold text-white mb-4 leading-tight">
+            {task.task_title}
+          </h1>
           <div className="flex gap-4 mb-6">
-            <span className="bg-indigo-500/10 text-indigo-400 text-xs px-3 py-1 rounded-full border border-indigo-500/20">
+            <span className="bg-indigo-500/10 text-indigo-400 text-xs px-3 py-1 rounded-full border border-indigo-500/20 font-bold uppercase tracking-wider">
               By {task.buyer_name}
             </span>
-            <span className="bg-yellow-500/10 text-yellow-400 text-xs px-3 py-1 rounded-full border border-yellow-500/20">
+            <span className="bg-yellow-500/10 text-yellow-400 text-xs px-3 py-1 rounded-full border border-yellow-500/20 font-bold">
               🪙 {task.payable_amount}
             </span>
           </div>
@@ -90,12 +87,12 @@ const TaskDetails = () => {
             <div>
               <h4 className="text-white font-bold mb-2">Description</h4>
               <p className="text-slate-400 text-sm leading-relaxed">
-                {task.detail}
+                {task.task_detail}
               </p>
             </div>
             <div>
               <h4 className="text-white font-bold mb-2">What to Submit</h4>
-              <p className="text-slate-400 text-sm p-4 bg-slate-900/50 rounded-xl border border-slate-800 italic">
+              <p className="text-slate-400 text-sm p-4 bg-slate-900/50 rounded-xl border border-slate-800 italic leading-relaxed">
                 {task.submission_info}
               </p>
             </div>
@@ -123,7 +120,7 @@ const TaskDetails = () => {
                   rows="6"
                   placeholder="Enter proof details here (usernames, links, etc.)"
                   required
-                  className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-indigo-500"
+                  className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-indigo-500 transition-all"
                 ></textarea>
               </div>
             </div>

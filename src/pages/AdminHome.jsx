@@ -1,64 +1,73 @@
 import { motion } from "framer-motion";
 import { FiUsers, FiDollarSign, FiClock, FiCheckCircle } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { axiosSecure } from "../hooks/useAxios";
 
 const AdminHome = () => {
-  // Mock States for Admin
+  const [statsData, setStatsData] = useState(null);
+  const [withdrawRequests, setWithdrawRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [statsRes, withdrawRes] = await Promise.all([
+          axiosSecure.get("/admin-stats"),
+          axiosSecure.get("/withdrawals/pending"),
+        ]);
+        setStatsData(statsRes.data);
+        setWithdrawRequests(withdrawRes.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handlePaymentSuccess = async (id, workerEmail, withdrawal_coin) => {
+    try {
+      await axiosSecure.patch(`/withdrawals/${id}`, {
+        status: "approved",
+        workerEmail,
+        withdrawal_coin,
+      });
+      setWithdrawRequests(withdrawRequests.filter((req) => req._id !== id));
+      alert("Payment Successful! User coins deducted and status updated.");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  if (loading) return null;
+
   const stats = [
     {
       label: "Total Workers",
-      value: 156,
+      value: statsData?.totalWorkers || 0,
       icon: <FiUsers />,
       color: "bg-blue-500",
     },
     {
       label: "Total Buyers",
-      value: 42,
+      value: statsData?.totalBuyers || 0,
       icon: <FiUsers />,
       color: "bg-indigo-500",
     },
     {
       label: "Total Coins",
-      value: "🪙 15.4K",
+      value: `🪙 ${statsData?.totalAvailableCoin || 0}`,
       icon: <FiDollarSign />,
       color: "bg-yellow-500",
     },
     {
       label: "Total Payments",
-      value: "$4,250",
+      value: `$${statsData?.totalPayments || 0}`,
       icon: <FiCheckCircle />,
       color: "bg-emerald-500",
     },
   ];
-
-  // Mock Withdrawal Requests
-  const [withdrawRequests, setWithdrawRequests] = useState([
-    {
-      id: 1,
-      worker_name: "Alice Smith",
-      worker_email: "alice@example.com",
-      withdrawal_coin: 500,
-      withdrawal_amount: 25,
-      payment_system: "bkash",
-      account_number: "01712345678",
-      status: "pending",
-    },
-    {
-      id: 2,
-      worker_name: "Bob Jones",
-      worker_email: "bob@example.com",
-      withdrawal_coin: 200,
-      withdrawal_amount: 10,
-      payment_system: "nagad",
-      account_number: "01987654321",
-      status: "pending",
-    },
-  ]);
-
-  const handlePaymentSuccess = (id) => {
-    setWithdrawRequests(withdrawRequests.filter((req) => req.id !== id));
-    alert("Payment Successful! User coins deducted and status updated.");
-  };
 
   return (
     <div className="space-y-10 animate-fadeIn overflow-hidden">
@@ -112,7 +121,7 @@ const AdminHome = () => {
             <tbody className="divide-y divide-slate-800">
               {withdrawRequests.map((req) => (
                 <tr
-                  key={req.id}
+                  key={req._id}
                   className="hover:bg-slate-800/30 transition-colors"
                 >
                   <td className="px-6 py-4">
@@ -141,7 +150,13 @@ const AdminHome = () => {
                   </td>
                   <td className="px-6 py-4 text-center">
                     <button
-                      onClick={() => handlePaymentSuccess(req.id)}
+                      onClick={() =>
+                        handlePaymentSuccess(
+                          req._id,
+                          req.worker_email,
+                          req.withdrawal_coin
+                        )
+                      }
                       className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow-lg shadow-emerald-500/10"
                     >
                       Payment Success

@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../providers/AuthProvider";
+import { useUserData } from "../hooks/useUserData";
 import { motion } from "framer-motion";
 import {
   FiDollarSign,
@@ -7,17 +8,21 @@ import {
   FiHash,
   FiAlertCircle,
 } from "react-icons/fi";
+import { axiosSecure } from "../hooks/useAxios";
 
 const Withdrawals = () => {
   const { user } = useContext(AuthContext);
+  const [dbUser, isUserLoading] = useUserData();
   const [coinsToWithdraw, setCoinsToWithdraw] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const userCoins = user?.coins || 250; // Mock current coins
+  if (isUserLoading) return null;
+
+  const userCoins = dbUser?.coins || 0;
   const withdrawalAmount = (coinsToWithdraw / 20).toFixed(2);
   const canWithdraw = userCoins >= 200;
 
-  const handleWithdraw = (e) => {
+  const handleWithdraw = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -31,23 +36,33 @@ const Withdrawals = () => {
       return;
     }
 
+    if (coinsToWithdraw > userCoins) {
+      alert("You don't have enough coins.");
+      setLoading(false);
+      return;
+    }
+
     const withdrawalData = {
       worker_email: user?.email,
       worker_name: user?.displayName,
       withdrawal_coin: coinsToWithdraw,
-      withdrawal_amount: withdrawalAmount,
+      withdrawal_amount: parseFloat(withdrawalAmount),
       payment_system: system,
       account_number: accountNumber,
       withdraw_date: new Date().toISOString().split("T")[0],
       status: "pending",
     };
 
-    console.log("Processing withdrawal:", withdrawalData);
-
-    setTimeout(() => {
+    try {
+      await axiosSecure.post("/withdrawals", withdrawalData);
       alert(`Withdrawal request of $${withdrawalAmount} sent successfully!`);
+      form.reset();
+      setCoinsToWithdraw(0);
+    } catch (err) {
+      console.error(err);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -107,7 +122,7 @@ const Withdrawals = () => {
                         setCoinsToWithdraw(parseInt(e.target.value) || 0)
                       }
                       required
-                      className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-indigo-500"
+                      className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 pl-12 pr-4 text-white focus:outline-none focus:border-indigo-500 transition-all"
                     />
                   </div>
                 </div>
@@ -139,7 +154,6 @@ const Withdrawals = () => {
                       <option value="bkash">bkash</option>
                       <option value="rocket">rocket</option>
                       <option value="nagad">nagad</option>
-                      <option value="stripe">Stripe (Soon)</option>
                     </select>
                   </div>
                 </div>

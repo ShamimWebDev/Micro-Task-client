@@ -1,17 +1,25 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FiMenu, FiX, FiGithub } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../providers/AuthProvider";
 
 const Navbar = () => {
-  // Mock logged in state for design integration
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { user, logOut } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
-  const [user] = useState({
-    displayName: "John Doe",
-    photoURL: "https://ui-avatars.com/api/?name=John+Doe",
-    coins: 150,
-  });
+  const navigate = useNavigate();
+
+  // Default coins if not in user object yet (should be fetched from DB)
+  const coins = user?.coins || 10;
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <nav className="fixed w-full z-50 glass">
@@ -26,7 +34,7 @@ const Navbar = () => {
           {/* Desktop Menu */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              {!isLoggedIn ? (
+              {!user ? (
                 <>
                   <Link
                     to="/login"
@@ -44,13 +52,13 @@ const Navbar = () => {
               ) : (
                 <>
                   <Link
-                    to="/"
+                    to="/dashboard"
                     className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
                   >
                     Dashboard
                   </Link>
-                  <span className="text-yellow-400 font-semibold px-3 py-2 text-sm">
-                    🪙 {user.coins}
+                  <span className="text-yellow-400 font-semibold px-3 py-2 text-sm flex items-center gap-1">
+                    🪙 {coins}
                   </span>
                 </>
               )}
@@ -64,15 +72,15 @@ const Navbar = () => {
                 <FiGithub /> Join as Developer
               </a>
 
-              {isLoggedIn && (
+              {user && (
                 <div className="ml-4 flex items-center gap-3">
                   <img
-                    className="h-8 w-8 rounded-full border border-gray-600"
-                    src={user.photoURL}
-                    alt={user.displayName}
+                    className="h-8 w-8 rounded-full border border-gray-600 object-cover"
+                    src={user?.photoURL}
+                    alt={user?.displayName}
                   />
                   <button
-                    onClick={() => setIsLoggedIn(false)}
+                    onClick={handleLogout}
                     className="text-gray-400 hover:text-white text-sm font-medium transition-colors"
                   >
                     Logout
@@ -107,7 +115,7 @@ const Navbar = () => {
           className="md:hidden glass border-t border-gray-700"
         >
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {!isLoggedIn ? (
+            {!user ? (
               <>
                 <Link
                   to="/login"
@@ -125,24 +133,24 @@ const Navbar = () => {
             ) : (
               <>
                 <Link
-                  to="/"
+                  to="/dashboard"
                   className="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
                 >
                   Dashboard
                 </Link>
                 <div className="px-3 py-2">
                   <span className="text-yellow-400 font-semibold text-sm">
-                    Available Coins: {user.coins}
+                    Available Coins: {coins}
                   </span>
                 </div>
                 <div className="flex items-center gap-3 px-3 py-2">
                   <img
-                    className="h-8 w-8 rounded-full border border-gray-600"
-                    src={user.photoURL}
-                    alt={user.displayName}
+                    className="h-10 w-10 rounded-full border border-gray-600 object-cover"
+                    src={user?.photoURL}
+                    alt={user?.displayName}
                   />
                   <button
-                    onClick={() => setIsLoggedIn(false)}
+                    onClick={handleLogout}
                     className="text-gray-400 hover:text-white text-sm font-medium transition-colors"
                   >
                     Logout

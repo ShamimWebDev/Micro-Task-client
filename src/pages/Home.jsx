@@ -4,28 +4,22 @@ import BestWorkers from "../components/BestWorkers";
 import Testimonials from "../components/Testimonials";
 import HowItWorks from "../components/HowItWorks";
 import WhyChooseUs from "../components/WhyChooseUs";
-// import Footer from '../components/Footer';
+import PlatformStats from "../components/PlatformStats";
+import Footer from "../components/Footer";
 
 const Home = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-slate-950">
       <Navbar />
       <main className="flex-grow">
         <HeroSection />
-        <BestWorkers />
-        <Testimonials />
-        <HowItWorks />
+        <PlatformStats />
         <WhyChooseUs />
-        <div className="container mx-auto px-4 py-8">
-          <h1 className="text-4xl font-bold text-center text-gradient mb-4">
-            Welcome to Micro-Task
-          </h1>
-          <p className="text-center text-slate-400">
-            Earn money by completing simple tasks.
-          </p>
-        </div>
+        <BestWorkers />
+        <HowItWorks />
+        <Testimonials />
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };

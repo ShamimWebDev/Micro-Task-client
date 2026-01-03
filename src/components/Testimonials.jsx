@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import { motion } from "framer-motion";
-import { FiQuote } from "react-icons/fi";
+import { FaQuoteLeft } from "react-icons/fa";
 
 import "swiper/css";
 import "swiper/css/pagination";
@@ -94,7 +94,7 @@ const Testimonials = () => {
                 whileHover={{ y: -5 }}
                 className="glass-card p-8 rounded-2xl h-full flex flex-col relative"
               >
-                <FiQuote className="absolute top-6 right-6 text-4xl text-slate-700/50" />
+                <FaQuoteLeft className="absolute top-6 right-6 text-4xl text-slate-700/50" />
 
                 <div className="flex items-center gap-4 mb-6">
                   <img

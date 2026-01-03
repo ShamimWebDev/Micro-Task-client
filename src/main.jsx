@@ -6,8 +6,6 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import DashboardLayout from "./pages/DashboardLayout";
-import BuyerHome from "./pages/BuyerHome";
-import WorkerHome from "./pages/WorkerHome";
 import DashboardHome from "./pages/DashboardHome";
 import AddTask from "./pages/AddTask";
 import MyTasks from "./pages/MyTasks";
@@ -20,6 +18,8 @@ import PaymentHistory from "./pages/PaymentHistory";
 import ManageUsers from "./pages/ManageUsers";
 import ManageTasks from "./pages/ManageTasks";
 import AuthProvider from "./providers/AuthProvider";
+import PrivateRoute from "./routes/PrivateRoute";
+import { AdminRoute, BuyerRoute, WorkerRoute } from "./routes/RoleRoutes";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -30,19 +30,102 @@ createRoot(document.getElementById("root")).render(
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* Dashboard Routes */}
-          <Route path="/dashboard" element={<DashboardLayout />}>
+          {/* Dashboard Routes - Protected */}
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <DashboardLayout />
+              </PrivateRoute>
+            }
+          >
             <Route index element={<DashboardHome />} />
-            <Route path="add-task" element={<AddTask />} />
-            <Route path="my-tasks" element={<MyTasks />} />
-            <Route path="task-list" element={<TaskList />} />
-            <Route path="task-details/:id" element={<TaskDetails />} />
-            <Route path="my-submissions" element={<MySubmissions />} />
-            <Route path="purchase-coin" element={<PurchaseCoin />} />
-            <Route path="withdrawals" element={<Withdrawals />} />
-            <Route path="payment-history" element={<PaymentHistory />} />
-            <Route path="manage-users" element={<ManageUsers />} />
-            <Route path="manage-tasks" element={<ManageTasks />} />
+
+            {/* Buyer Routes */}
+            <Route
+              path="add-task"
+              element={
+                <BuyerRoute>
+                  <AddTask />
+                </BuyerRoute>
+              }
+            />
+            <Route
+              path="my-tasks"
+              element={
+                <BuyerRoute>
+                  <MyTasks />
+                </BuyerRoute>
+              }
+            />
+            <Route
+              path="purchase-coin"
+              element={
+                <BuyerRoute>
+                  <PurchaseCoin />
+                </BuyerRoute>
+              }
+            />
+            <Route
+              path="payment-history"
+              element={
+                <BuyerRoute>
+                  <PaymentHistory />
+                </BuyerRoute>
+              }
+            />
+
+            {/* Worker Routes */}
+            <Route
+              path="task-list"
+              element={
+                <WorkerRoute>
+                  <TaskList />
+                </WorkerRoute>
+              }
+            />
+            <Route
+              path="task-details/:id"
+              element={
+                <WorkerRoute>
+                  <TaskDetails />
+                </WorkerRoute>
+              }
+            />
+            <Route
+              path="my-submissions"
+              element={
+                <WorkerRoute>
+                  <MySubmissions />
+                </WorkerRoute>
+              }
+            />
+            <Route
+              path="withdrawals"
+              element={
+                <WorkerRoute>
+                  <Withdrawals />
+                </WorkerRoute>
+              }
+            />
+
+            {/* Admin Routes */}
+            <Route
+              path="manage-users"
+              element={
+                <AdminRoute>
+                  <ManageUsers />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="manage-tasks"
+              element={
+                <AdminRoute>
+                  <ManageTasks />
+                </AdminRoute>
+              }
+            />
           </Route>
         </Routes>
       </BrowserRouter>

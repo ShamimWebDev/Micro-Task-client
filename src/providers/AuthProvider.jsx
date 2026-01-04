@@ -9,7 +9,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
-import axios from "axios";
+import { axiosPublic } from "../hooks/useAxios";
 
 export const AuthContext = createContext(null);
 
@@ -54,7 +54,7 @@ const AuthProvider = ({ children }) => {
       if (currentUser) {
         // Get token and store in local storage
         try {
-          const { data } = await axios.post("http://localhost:5000/jwt", {
+          const { data } = await axiosPublic.post("/jwt", {
             email: currentUser.email,
           });
           if (data.token) {

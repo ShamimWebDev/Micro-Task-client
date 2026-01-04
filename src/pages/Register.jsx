@@ -13,6 +13,8 @@ import {
   Sparkles,
   Fingerprint,
   Zap,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 import { imageUpload } from "../utils/imageUpload";
@@ -26,6 +28,7 @@ const Register = () => {
     useContext(AuthContext);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
   const navigate = useNavigate();
 
@@ -271,11 +274,18 @@ const Register = () => {
                   />
                   <input
                     name="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     required
-                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-4 text-white text-sm font-bold focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-700 shadow-inner"
+                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-12 text-white text-sm font-bold focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-700 shadow-inner"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600 hover:text-indigo-400 transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </div>
 
                 {error && (

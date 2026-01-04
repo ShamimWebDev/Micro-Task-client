@@ -48,10 +48,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    e.preventDefault();
-    // const form = e.target;
-    // const email = form.email.value;
-    // const password = form.password.value;
 
     setLoading(true);
     setError("");

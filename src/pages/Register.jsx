@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   User,
   Mail,
@@ -15,7 +15,6 @@ import {
   Zap,
   Eye,
   EyeOff,
-  Check,
 } from "lucide-react";
 import { FaGoogle } from "react-icons/fa";
 import { imageUpload } from "../utils/imageUpload";
@@ -31,15 +30,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
-  const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,7 +39,7 @@ const Register = () => {
     const email = form.email.value;
     const image = form.image.files[0];
     const password = form.password.value;
-    const role = selectedRole; // Use state instead of form value
+    const role = form.role.value;
 
     setLoading(true);
     setError("");
@@ -235,119 +226,43 @@ const Register = () => {
                   />
                 </div>
 
-                {/* Compact Image Upload with Preview */}
-                <div className="flex flex-col items-center gap-4">
-                  <div className="relative group/img w-20 h-20">
-                    <div className="absolute inset-0 bg-indigo-500/20 rounded-full blur-xl group-hover/img:opacity-100 opacity-0 transition-opacity" />
-                    <label className="relative block w-20 h-20 rounded-full border-2 border-dashed border-slate-700 hover:border-indigo-500 bg-slate-950 overflow-hidden cursor-pointer transition-colors">
-                      <input
-                        name="image"
-                        type="file"
-                        accept="image/*"
-                        required
-                        onChange={handleImageChange}
-                        className="hidden"
-                      />
-                      {imagePreview ? (
-                        <img
-                          src={imagePreview}
-                          alt="Preview"
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="h-full flex flex-col items-center justify-center text-slate-600">
-                          <ImageIcon size={20} />
-                        </div>
-                      )}
-                    </label>
-                    <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-indigo-600/20 pointer-events-none">
-                      <ImageIcon size={14} />
-                    </div>
-                  </div>
-                  <p className="text-[9px] font-black uppercase tracking-widest text-slate-500">
-                    {imagePreview ? "Change Photo" : "Upload Picture"}
-                  </p>
+                {/* Profile Picture */}
+                <div className="relative group">
+                  <ImageIcon
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600"
+                    size={18}
+                  />
+                  <input
+                    name="image"
+                    type="file"
+                    accept="image/*"
+                    required
+                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-3 pl-12 pr-4 text-slate-400 text-[10px] font-black file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-black file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer shadow-inner"
+                  />
                 </div>
 
-                {/* Compact Role Selection Cards */}
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRole("worker")}
-                    className={cn(
-                      "relative p-4 rounded-2xl border transition-all flex flex-col items-center gap-2 group/role overflow-hidden",
-                      selectedRole === "worker"
-                        ? "bg-indigo-600 border-indigo-500 ring-4 ring-indigo-500/10"
-                        : "bg-slate-950 border-slate-800 hover:border-indigo-500/50"
-                    )}
-                  >
-                    <Briefcase
-                      size={20}
-                      className={cn(
-                        "transition-colors",
-                        selectedRole === "worker"
-                          ? "text-white"
-                          : "text-slate-600 group-hover/role:text-indigo-400"
-                      )}
-                    />
-                    <span
-                      className={cn(
-                        "text-[10px] font-black uppercase tracking-widest",
-                        selectedRole === "worker"
-                          ? "text-white"
-                          : "text-slate-500"
-                      )}
-                    >
-                      Worker
-                    </span>
-                    {selectedRole === "worker" && (
-                      <div className="absolute top-1 right-1">
-                        <Check size={10} className="text-white" />
-                      </div>
-                    )}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setSelectedRole("buyer")}
-                    className={cn(
-                      "relative p-4 rounded-2xl border transition-all flex flex-col items-center gap-2 group/role overflow-hidden",
-                      selectedRole === "buyer"
-                        ? "bg-pink-600 border-pink-500 ring-4 ring-pink-500/10"
-                        : "bg-slate-950 border-slate-800 hover:border-pink-500/50"
-                    )}
-                  >
-                    <User
-                      size={20}
-                      className={cn(
-                        "transition-colors",
-                        selectedRole === "buyer"
-                          ? "text-white"
-                          : "text-slate-600 group-hover/role:text-pink-400"
-                      )}
-                    />
-                    <span
-                      className={cn(
-                        "text-[10px] font-black uppercase tracking-widest",
-                        selectedRole === "buyer"
-                          ? "text-white"
-                          : "text-slate-500"
-                      )}
-                    >
-                      Buyer
-                    </span>
-                    {selectedRole === "buyer" && (
-                      <div className="absolute top-1 right-1">
-                        <Check size={10} className="text-white" />
-                      </div>
-                    )}
-                  </button>
-                  {/* Validation placeholder for role */}
-                  <input
-                    type="hidden"
+                {/* Role */}
+                <div className="relative group">
+                  <Briefcase
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-600 pointer-events-none"
+                    size={18}
+                  />
+                  <select
                     name="role"
-                    value={selectedRole}
                     required
+                    value={selectedRole}
+                    onChange={(e) => setSelectedRole(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-4 text-white text-sm font-bold focus:outline-none focus:border-indigo-500 transition-all appearance-none cursor-pointer shadow-inner"
+                  >
+                    <option value="" disabled>
+                      I want to...
+                    </option>
+                    <option value="worker">Work & Earn</option>
+                    <option value="buyer">Post Tasks</option>
+                  </select>
+                  <ChevronRight
+                    size={14}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-600 rotate-90"
                   />
                 </div>
 

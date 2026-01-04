@@ -46,13 +46,13 @@ const PaymentHistory = () => {
       >
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-[1px] bg-indigo-500" />
+            <div className="w-12 h-px bg-indigo-500" />
             <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
-              Transaction Archive
+              Payment History
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-            Financial <span className="text-gradient">Ledger</span>
+            Transaction <span className="text-gradient">Log</span>
           </h1>
         </div>
 
@@ -62,10 +62,10 @@ const PaymentHistory = () => {
           </div>
           <div>
             <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1">
-              Entry Count
+              Total Transactions
             </p>
             <p className="text-xl font-black text-white">
-              {history.length} Records
+              {history.length} Transactions
             </p>
           </div>
         </div>
@@ -88,10 +88,10 @@ const PaymentHistory = () => {
               </div>
               <div>
                 <h2 className="text-xl font-black text-white">
-                  Acquisition Logs
+                  Payment Records
                 </h2>
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
-                  Liquidity Transaction Synchronization
+                  Detailed history of your payment activities
                 </p>
               </div>
             </div>
@@ -99,7 +99,7 @@ const PaymentHistory = () => {
             <div className="flex items-center gap-2 bg-emerald-500/10 px-4 py-2 rounded-xl border border-emerald-500/20">
               <Activity size={14} className="text-emerald-500" />
               <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest leading-none">
-                Verified Transactions
+                Verified Payments
               </span>
             </div>
           </div>
@@ -109,13 +109,13 @@ const PaymentHistory = () => {
               <thead>
                 <tr className="border-b border-white/5">
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                    Hash / Auth ID
+                    Transaction ID
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Settlement
+                    Amount
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Credit Yield
+                    Coins Received
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
                     Timestamp
@@ -129,14 +129,14 @@ const PaymentHistory = () => {
                 {history.map((pay) => (
                   <tr
                     key={pay._id}
-                    className="group/row hover:bg-white/[0.02] transition-colors"
+                    className="group/row hover:bg-white/2 transition-colors"
                   >
                     <td className="px-10 py-6">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 glass rounded-lg flex items-center justify-center text-indigo-400/50">
                           <Hash size={14} />
                         </div>
-                        <span className="text-xs font-black text-indigo-400 font-mono tracking-wider group-hover/row:text-indigo-300 transition-colors">
+                        <span className="group flex items-center justify-between p-4 rounded-xl border border-white/5 bg-white/0 hover:bg-white/2 hover:border-indigo-500/30 transition-all duration-300">
                           {pay.transactionId}
                         </span>
                       </div>
@@ -166,7 +166,7 @@ const PaymentHistory = () => {
                       <div className="inline-flex items-center gap-2 bg-emerald-500/10 px-4 py-1.5 rounded-xl border border-emerald-500/20 shadow-lg">
                         <CheckCircle2 size={12} className="text-emerald-500" />
                         <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest leading-none">
-                          Settled
+                          Completed
                         </span>
                       </div>
                     </td>

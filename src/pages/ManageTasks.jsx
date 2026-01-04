@@ -56,13 +56,13 @@ const ManageTasks = () => {
       >
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-[1px] bg-indigo-500" />
+            <div className="w-12 h-px bg-indigo-500" />
             <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
-              Platform Oversight
+              Task Management
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-            Mission <span className="text-gradient">Registry</span>
+            Task <span className="text-gradient">List</span>
           </h1>
         </div>
 
@@ -100,11 +100,12 @@ const ManageTasks = () => {
                 <ShieldAlert size={20} />
               </div>
               <div>
-                <h2 className="text-xl font-black text-white">
-                  Mission Moderation
-                </h2>
+                <p className="text-slate-500 mt-4 font-medium max-w-lg">
+                  Complete overview of all platform tasks. Monitor, review, and
+                  manage active listings.
+                </p>{" "}
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
-                  Operational Parameter Oversight
+                  Manage and review all platform tasks
                 </p>
               </div>
             </div>
@@ -122,19 +123,19 @@ const ManageTasks = () => {
               <thead>
                 <tr className="border-b border-white/5">
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                    Objective Architecture
+                    Task Details
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                    Origin Agent
+                    Task Owner
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Deployment Scale
+                    Quantity
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Bounty Index
+                    Payment
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Control
+                    Actions
                   </th>
                 </tr>
               </thead>
@@ -142,7 +143,7 @@ const ManageTasks = () => {
                 {tasks.map((task) => (
                   <tr
                     key={task._id}
-                    className="group/row hover:bg-white/[0.02] transition-colors"
+                    className="group/row hover:bg-white/2 transition-colors"
                   >
                     <td className="px-10 py-6">
                       <div className="flex flex-col">
@@ -187,7 +188,7 @@ const ManageTasks = () => {
                       <div className="flex justify-center">
                         <button
                           onClick={() => handleDeleteTask(task._id)}
-                          className="w-10 h-10 glass rounded-xl flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-lg active:scale-95 border-white/5"
+                          className="group flex flex-col items-center justify-center p-4 rounded-xl border border-white/5 bg-white/0 hover:bg-white/2 hover:border-indigo-500/30 transition-all duration-300 cursor-pointer active:scale-95"
                         >
                           <Trash2 size={18} />
                         </button>

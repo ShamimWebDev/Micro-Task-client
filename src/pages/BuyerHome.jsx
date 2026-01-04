@@ -75,7 +75,7 @@ const BuyerHome = () => {
 
   const stats = [
     {
-      label: "Active Missions",
+      label: "Active Tasks",
       value: statsData?.totalTaskCount || 0,
       icon: <Briefcase size={20} />,
       color: "text-indigo-400",
@@ -83,7 +83,7 @@ const BuyerHome = () => {
       border: "border-indigo-500/20",
     },
     {
-      label: "Available Slots",
+      label: "Openings",
       value: statsData?.pendingTaskCount || 0,
       icon: <Clock size={20} />,
       color: "text-pink-400",
@@ -91,7 +91,7 @@ const BuyerHome = () => {
       border: "border-pink-500/20",
     },
     {
-      label: "Capital Allocated",
+      label: "Total Paid",
       value: statsData?.totalPaymentPaid || 0,
       icon: <Coins size={20} />,
       color: "text-emerald-400",
@@ -111,34 +111,34 @@ const BuyerHome = () => {
       >
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-[1px] bg-indigo-500" />
+            <div className="w-12 h-px bg-indigo-500" />
             <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
-              Buyer Control Panel
+              Buyer Dashboard
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-            Mission <span className="text-gradient">Intelligence</span>
+            Task <span className="text-gradient">Overview</span>
           </h1>
         </div>
 
         <div className="flex items-center gap-4 bg-slate-900/50 p-2 rounded-2xl border border-slate-800">
           <div className="px-4 border-r border-slate-800">
             <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">
-              Queue Status
+              Tasks Pending
             </p>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
               <span className="text-xs font-bold text-white uppercase tracking-wider text-[10px]">
-                {submissions.length} Review Ready
+                {submissions.length} To Review
               </span>
             </div>
           </div>
           <div className="px-4">
             <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">
-              Authorization
+              Status
             </p>
             <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider text-[10px]">
-              Verified Buyer
+              Active
             </span>
           </div>
         </div>
@@ -153,7 +153,7 @@ const BuyerHome = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
             className={cn(
-              "group relative overflow-hidden glass-card p-8 rounded-[2rem] border transition-all duration-500",
+              "group relative overflow-hidden glass-card p-8 rounded-4xl border transition-all duration-500",
               stat.border
             )}
           >
@@ -185,7 +185,7 @@ const BuyerHome = () => {
 
               <div className="mt-8 flex items-center gap-2 text-[10px] font-black text-indigo-500 uppercase tracking-widest">
                 <Zap size={12} fill="currentColor" />
-                High Efficiency Mode
+                Updated
               </div>
             </div>
           </motion.div>
@@ -201,7 +201,7 @@ const BuyerHome = () => {
       >
         <div className="absolute inset-0 bg-indigo-600/5 blur-[100px] rounded-full pointer-events-none" />
 
-        <div className="relative glass-card rounded-[2.5rem] border border-white/5 overflow-hidden">
+        <div className="relative bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-4xl p-8 overflow-hidden h-full flex flex-col">
           <div className="p-10 border-b border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 glass rounded-xl flex items-center justify-center text-indigo-400">
@@ -209,17 +209,17 @@ const BuyerHome = () => {
               </div>
               <div>
                 <h2 className="text-xl font-black text-white">
-                  Review Pipeline
+                  Task Submissions
                 </h2>
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
-                  Pending Validation Queue
+                  Submissions waiting for approval
                 </p>
               </div>
             </div>
 
             <div className="flex items-center gap-2 bg-indigo-500/10 px-4 py-2 rounded-xl border border-indigo-500/20">
               <span className="text-xs font-black text-indigo-400 uppercase tracking-widest">
-                {submissions.length} Tasks Requiring Action
+                {submissions.length} Pending Tasks
               </span>
             </div>
           </div>
@@ -229,16 +229,16 @@ const BuyerHome = () => {
               <thead>
                 <tr className="border-b border-white/5">
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                    Operator
+                    Worker
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                    Objective
+                    Task Title
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Bounty
+                    Payable Amount
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Control
+                    Actions
                   </th>
                 </tr>
               </thead>
@@ -246,7 +246,7 @@ const BuyerHome = () => {
                 {submissions.map((sub) => (
                   <tr
                     key={sub._id}
-                    className="group/row hover:bg-white/[0.02] transition-colors"
+                    className="group/row hover:bg-white/2 transition-colors"
                   >
                     <td className="px-10 py-6">
                       <div className="flex items-center gap-3">
@@ -258,7 +258,7 @@ const BuyerHome = () => {
                             {sub.worker_name}
                           </span>
                           <span className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">
-                            Worker Node
+                            Worker
                           </span>
                         </div>
                       </div>
@@ -269,7 +269,7 @@ const BuyerHome = () => {
                           {sub.task_title}
                         </span>
                         <span className="text-[9px] text-slate-500 font-medium font-mono mt-1 uppercase">
-                          ARCHIVE_{sub._id.slice(-6)}
+                          ID: {sub._id.slice(-6)}
                         </span>
                       </div>
                     </td>
@@ -285,7 +285,7 @@ const BuyerHome = () => {
                       <div className="flex items-center justify-center gap-3">
                         <button
                           onClick={() => setSelectedSub(sub)}
-                          className="w-10 h-10 glass rounded-xl flex items-center justify-center text-slate-400 hover:text-white hover:border-white/20 transition-all shadow-lg"
+                          className="group flex flex-col items-center justify-center p-4 rounded-xl border border-white/5 bg-white/0 hover:bg-white/2 hover:border-indigo-500/30 transition-all duration-300 cursor-pointer"
                         >
                           <Eye size={18} />
                         </button>
@@ -314,7 +314,7 @@ const BuyerHome = () => {
                           <ShieldCheck size={32} />
                         </div>
                         <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.4em]">
-                          Pipeline Synchronized. No Pending Actions.
+                          No pending submissions to review.
                         </p>
                       </div>
                     </td>
@@ -326,17 +326,17 @@ const BuyerHome = () => {
         </div>
       </motion.div>
 
-      {/* Elite Modal */}
+      {/* Pro Modal */}
       <AnimatePresence>
         {selectedSub && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-100 flex items-center justify-center p-6 bg-slate-950/80 backdrop-blur-md">
             <motion.div
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               className="glass-card max-w-xl w-full p-10 rounded-[3rem] border border-white/5 shadow-2xl relative overflow-hidden"
             >
-              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
+              <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-indigo-500/50 to-transparent" />
 
               <div className="flex items-center gap-4 mb-10">
                 <div className="w-12 h-12 glass rounded-2xl flex items-center justify-center text-indigo-400 shadow-inner">
@@ -344,33 +344,33 @@ const BuyerHome = () => {
                 </div>
                 <div>
                   <h3 className="text-2xl font-black text-white leading-tight">
-                    Proof Evidence
+                    Submission Proof
                   </h3>
                   <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
-                    Verification Stream {selectedSub._id.slice(-6)}
+                    Submission ID: {selectedSub._id.slice(-6)}
                   </p>
                 </div>
               </div>
 
-              <div className="bg-slate-900 shadow-inner p-8 rounded-[2rem] border border-white/5 text-slate-300 font-medium leading-relaxed mb-10 min-h-[120px] max-h-60 overflow-y-auto custom-scrollbar italic">
+              <div className="bg-slate-900/50 rounded-4xl border border-white/5 p-6 mb-8 relative">
                 "{selectedSub.submission_details}"
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   onClick={() => setSelectedSub(null)}
-                  className="flex-grow py-4 glass text-white font-black text-xs uppercase tracking-widest rounded-2xl border-white/5 hover:bg-white/5 transition-all"
+                  className="grow py-4 glass text-white font-black text-xs uppercase tracking-widest rounded-2xl border-white/5 hover:bg-white/5 transition-all"
                 >
-                  Dismiss Proof
+                  Close
                 </button>
                 <button
                   onClick={() => {
                     handleApprove(selectedSub);
                     setSelectedSub(null);
                   }}
-                  className="flex-grow py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-lg shadow-indigo-600/20 transition-all active:scale-95"
+                  className="grow mt-6 lg:mt-0 bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs uppercase tracking-widest rounded-2xl shadow-lg shadow-indigo-600/20 transition-all active:scale-95"
                 >
-                  Authorize Payout
+                  Approve
                 </button>
               </div>
             </motion.div>

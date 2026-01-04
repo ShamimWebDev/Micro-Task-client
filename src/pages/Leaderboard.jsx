@@ -64,7 +64,7 @@ const Leaderboard = () => {
       default:
         return {
           icon: <Star size={20} className="text-indigo-400" />,
-          badge: "Operative",
+          badge: "Worker",
           gradient: "from-indigo-500/10 to-purple-500/10",
           borderColor: "border-white/5",
           glow: "",
@@ -78,7 +78,7 @@ const Leaderboard = () => {
     <div className="min-h-screen flex flex-col bg-slate-950">
       <Navbar />
 
-      <main className="flex-grow">
+      <main className="grow">
         <div className="max-w-7xl mx-auto px-6 py-24">
           {/* Header */}
           <motion.header
@@ -87,19 +87,18 @@ const Leaderboard = () => {
             className="text-center mb-20"
           >
             <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="w-12 h-[1px] bg-indigo-500" />
+              <div className="w-12 h-px bg-indigo-500" />
               <span className="text-indigo-400 font-black uppercase tracking-[0.4em] text-[10px]">
-                Elite Registry
+                Top Rated
               </span>
-              <div className="w-12 h-[1px] bg-indigo-500" />
+              <div className="w-12 h-px bg-indigo-500" />
             </div>
             <h1 className="text-6xl md:text-7xl font-black text-white tracking-tight mb-6">
-              Global <span className="text-gradient">Leaderboard</span>
+              Top <span className="text-gradient">Workers</span>
             </h1>
             <p className="text-slate-500 font-medium text-lg max-w-2xl mx-auto leading-relaxed">
-              Celebrating the most dedicated operatives in our global taskforce.
-              Rankings based on verified mission completions and excellence
-              ratings.
+              Celebrating the most dedicated workers on our platform. Rankings
+              based on verified completed tasks and excellence ratings.
             </p>
           </motion.header>
 
@@ -113,13 +112,13 @@ const Leaderboard = () => {
             {[
               {
                 icon: <Users size={24} />,
-                label: "Active Operatives",
+                label: "Active Workers",
                 value: workers.length,
                 color: "indigo",
               },
               {
                 icon: <Target size={24} />,
-                label: "Missions Completed",
+                label: "Tasks Completed",
                 value: workers.reduce(
                   (sum, w) => sum + (w.completedTasks || 0),
                   0
@@ -181,8 +180,7 @@ const Leaderboard = () => {
                 >
                   <div
                     className={cn(
-                      "absolute inset-0 bg-gradient-to-br opacity-50",
-                      config.gradient
+                      "absolute inset-0 bg-linear-to-br from-indigo-500/10 via-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                     )}
                   />
 
@@ -234,10 +232,10 @@ const Leaderboard = () => {
                     </div>
 
                     {/* Stats */}
-                    <div className="w-full space-y-4">
+                    <div className="grow space-y-6">
                       <div className="flex justify-between items-center p-4 bg-white/5 rounded-2xl">
                         <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                          Missions
+                          Tasks
                         </span>
                         <span className="text-lg font-black text-white">
                           {worker.completedTasks || 0}
@@ -272,7 +270,7 @@ const Leaderboard = () => {
                 <Award size={40} />
               </div>
               <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.5em]">
-                Leaderboard Initializing
+                Loading Leaderboard...
               </p>
             </div>
           )}

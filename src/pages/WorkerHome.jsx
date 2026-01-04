@@ -54,7 +54,7 @@ const WorkerHome = () => {
       border: "border-indigo-500/20",
     },
     {
-      label: "Pending Review",
+      label: "Pending Submissions",
       value: statsData?.pendingSubmission || 0,
       icon: <Clock size={20} />,
       color: "text-amber-400",
@@ -62,7 +62,7 @@ const WorkerHome = () => {
       border: "border-amber-500/20",
     },
     {
-      label: "Accumulated Vault",
+      label: "Total Earnings",
       value: statsData?.totalEarning || 0,
       icon: <Coins size={20} />,
       color: "text-emerald-400",
@@ -82,20 +82,20 @@ const WorkerHome = () => {
       >
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-[1px] bg-indigo-500" />
+            <div className="w-12 h-px bg-indigo-500" />
             <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
-              Worker Terminal
+              Worker Dashboard
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-            Performance <span className="text-gradient">Report</span>
+            My <span className="text-gradient">Stats</span>
           </h1>
         </div>
 
         <div className="flex items-center gap-4 bg-slate-900/50 p-2 rounded-2xl border border-slate-800">
           <div className="px-4 border-r border-slate-800">
             <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">
-              Status
+              Account Status
             </p>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -106,10 +106,10 @@ const WorkerHome = () => {
           </div>
           <div className="px-4">
             <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">
-              Last Update
+              Last Updated
             </p>
             <span className="text-xs font-bold text-slate-300 uppercase tracking-wider text-[10px]">
-              Real-time
+              Now
             </span>
           </div>
         </div>
@@ -124,7 +124,7 @@ const WorkerHome = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
             className={cn(
-              "group relative overflow-hidden glass-card p-8 rounded-[2rem] border transition-all duration-500",
+              "group relative overflow-hidden glass-card p-8 rounded-4xl border transition-all duration-500",
               stat.border
             )}
           >
@@ -157,7 +157,7 @@ const WorkerHome = () => {
 
               <div className="mt-8 flex items-center gap-2 text-[10px] font-black text-emerald-500 uppercase tracking-widest">
                 <Activity size={12} />
-                Live Synchronization
+                Updated Just Now
               </div>
             </div>
           </motion.div>
@@ -173,7 +173,7 @@ const WorkerHome = () => {
       >
         <div className="absolute inset-0 bg-indigo-600/5 blur-[100px] rounded-full pointer-events-none" />
 
-        <div className="relative glass-card rounded-[2.5rem] border border-white/5 overflow-hidden">
+        <div className="relative bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-4xl p-8 overflow-hidden h-full flex flex-col">
           <div className="p-10 border-b border-white/5 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 glass rounded-xl flex items-center justify-center text-emerald-400">
@@ -181,10 +181,10 @@ const WorkerHome = () => {
               </div>
               <div>
                 <h2 className="text-xl font-black text-white">
-                  Verified Achievements
+                  Approved Submissions
                 </h2>
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
-                  Recently Approved Submissions
+                  Your recent approved work
                 </p>
               </div>
             </div>
@@ -195,16 +195,16 @@ const WorkerHome = () => {
               <thead>
                 <tr className="border-b border-white/5">
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                    Objective
+                    Task Title
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Reward
+                    Payment
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                    Origin
+                    Buyer
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Protocol
+                    Status
                   </th>
                 </tr>
               </thead>
@@ -212,7 +212,7 @@ const WorkerHome = () => {
                 {approvedSubmissions.map((sub) => (
                   <tr
                     key={sub._id}
-                    className="group/row hover:bg-white/[0.02] transition-colors"
+                    className="group/row hover:bg-white/2 transition-colors"
                   >
                     <td className="px-10 py-6">
                       <div className="flex flex-col">
@@ -245,7 +245,7 @@ const WorkerHome = () => {
                       </div>
                     </td>
                     <td className="px-10 py-6 text-center">
-                      <div className="inline-flex items-center justify-center gap-2 bg-emerald-500/10 px-4 py-1.5 rounded-xl border border-emerald-500/20">
+                      <div className="group flex flex-col items-center justify-center p-4 rounded-xl border border-white/5 bg-white/0 hover:bg-white/2 hover:border-indigo-500/30 transition-all duration-300 cursor-pointer">
                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                         <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest leading-none">
                           Verified
@@ -259,7 +259,7 @@ const WorkerHome = () => {
                   <tr>
                     <td colSpan="4" className="px-10 py-20 text-center">
                       <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.3em]">
-                        No records found in the archive
+                        No approved submissions yet
                       </p>
                     </td>
                   </tr>

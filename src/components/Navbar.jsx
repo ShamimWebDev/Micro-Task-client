@@ -78,7 +78,8 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-8">
+            <div className="w-px h-8 bg-white/10" />
             <div className="flex items-center gap-6">
               {navLinks.map((link) => (
                 <Link
@@ -111,7 +112,7 @@ const Navbar = () => {
               )}
             </div>
 
-            <div className="h-6 w-[1px] bg-slate-800" />
+            <div className="h-6 w-px bg-slate-800" />
 
             <div className="flex items-center gap-4">
               {!user ? (
@@ -126,7 +127,7 @@ const Navbar = () => {
                     to="/register"
                     className="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-bold px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-indigo-500/25 border border-indigo-500/50"
                   >
-                    Join Now
+                    Sign Up
                   </Link>
                 </div>
               ) : (
@@ -168,7 +169,7 @@ const Navbar = () => {
                           initial={{ opacity: 0, y: 10, scale: 0.95 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                          className="absolute right-0 mt-3 w-64 glass-card rounded-2xl p-2 shadow-2xl z-[60]"
+                          className="absolute right-0 mt-3 w-64 glass-card rounded-2xl p-2 shadow-2xl z-60"
                         >
                           <div className="px-4 py-3 border-b border-slate-800/50 mb-2">
                             <p className="text-sm font-bold text-white truncate">
@@ -196,7 +197,7 @@ const Navbar = () => {
                             className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl transition-all"
                           >
                             <LogOut size={18} />
-                            Logout
+                            Log Out
                           </button>
                         </motion.div>
                       )}
@@ -248,7 +249,7 @@ const Navbar = () => {
                 </Link>
               ))}
 
-              <div className="h-[1px] bg-slate-800 my-4" />
+              <div className="h-px bg-slate-800 my-4" />
 
               {!user ? (
                 <div className="grid grid-cols-2 gap-4">
@@ -257,14 +258,14 @@ const Navbar = () => {
                     onClick={() => setIsOpen(false)}
                     className="flex items-center justify-center py-3 rounded-2xl border border-slate-800 text-white font-bold"
                   >
-                    Login
+                    Sign In
                   </Link>
                   <Link
                     to="/register"
                     onClick={() => setIsOpen(false)}
                     className="flex items-center justify-center py-3 rounded-2xl bg-indigo-600 text-white font-bold"
                   >
-                    Register
+                    Sign Up
                   </Link>
                 </div>
               ) : (
@@ -282,7 +283,7 @@ const Navbar = () => {
                     className="flex items-center gap-3 py-3 text-red-400 w-full"
                   >
                     <LogOut size={20} />
-                    Logout
+                    Log Out
                   </button>
                 </div>
               )}

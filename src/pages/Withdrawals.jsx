@@ -61,7 +61,7 @@ const Withdrawals = () => {
       await axiosSecure.post("/withdrawals", withdrawalData);
       form.reset();
       setCoinsToWithdraw(0);
-      alert("Settlement request initialized. Verification in progress.");
+      alert("Withdrawal request submitted successfully.");
     } catch (err) {
       console.error(err);
     } finally {
@@ -79,13 +79,13 @@ const Withdrawals = () => {
       >
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-[1px] bg-indigo-500" />
+            <div className="w-12 h-px bg-indigo-500" />
             <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
-              Fiscal Settlement
+              Withdrawal
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-            Liquidate <span className="text-gradient">Assets</span>
+            Withdraw <span className="text-gradient">Funds</span>
           </h1>
         </div>
 
@@ -95,7 +95,7 @@ const Withdrawals = () => {
           </div>
           <div>
             <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1">
-              Accumulated Credit
+              Total Coins
             </p>
             <p className="text-xl font-black text-white">
               {userCoins.toLocaleString()}
@@ -111,13 +111,13 @@ const Withdrawals = () => {
           animate={{ opacity: 1, y: 0 }}
           className="lg:col-span-1"
         >
-          <div className="glass-card p-10 rounded-[3rem] border border-white/5 relative overflow-hidden h-full flex flex-col">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-3xl" />
+          <div className="relative bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-4xl p-8 overflow-hidden h-full flex flex-col">
+            <div className="h-px w-full bg-linear-to-r from-transparent via-indigo-500/50 to-transparent" />
 
             <div className="space-y-8 grow text-center lg:text-left">
               <div>
                 <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4">
-                  Net Valuation
+                  Withdrawal Amount
                 </h4>
                 <div className="flex items-center justify-center lg:justify-start gap-3">
                   <DollarSign className="text-emerald-400" size={32} />
@@ -130,7 +130,7 @@ const Withdrawals = () => {
                 </div>
               </div>
 
-              <div className="h-[1px] bg-white/5 w-full" />
+              <div className="h-px bg-white/5 w-full" />
 
               <div className="space-y-4">
                 <div className="flex justify-between items-center text-xs">
@@ -141,7 +141,7 @@ const Withdrawals = () => {
                 </div>
                 <div className="flex justify-between items-center text-xs">
                   <span className="text-slate-500 font-bold uppercase tracking-widest">
-                    Min Settlement
+                    Min Withdrawal
                   </span>
                   <span className="text-indigo-400 font-black">
                     200 Coins ($10.00)
@@ -149,14 +149,13 @@ const Withdrawals = () => {
                 </div>
               </div>
 
-              <div className="mt-12 p-6 glass rounded-[2rem] border border-white/5 text-center">
+              <div className="bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-4xl p-8 sticky top-8 text-center">
                 <ShieldCheck
                   className="mx-auto mb-3 text-indigo-400"
                   size={24}
                 />
                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-relaxed">
-                  All settlements undergo a 24h architectural verification
-                  protocol.
+                  Withdrawals are usually processed within 24 hours.
                 </p>
               </div>
             </div>
@@ -176,13 +175,12 @@ const Withdrawals = () => {
                 <AlertCircle size={40} />
               </div>
               <h3 className="text-2xl font-black text-white mb-4">
-                Threshold Not Reached
+                Insufficient Balance
               </h3>
               <p className="text-slate-500 font-medium max-w-sm mx-auto leading-relaxed">
-                You require a minimum of{" "}
+                You need a minimum of{" "}
                 <span className="text-indigo-400 font-black">200 coins</span> to
-                authorize a fiscal transfer. Continue mission execution to reach
-                the settlement threshold.
+                make a withdrawal. Earn more coins by completing tasks.
               </p>
             </div>
           ) : (
@@ -196,7 +194,7 @@ const Withdrawals = () => {
                 {/* Coins Input */}
                 <div className="relative group">
                   <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-3 block ml-4">
-                    Liquidation Volume
+                    Coins to Withdraw
                   </label>
                   <div className="relative">
                     <Hash
@@ -222,7 +220,7 @@ const Withdrawals = () => {
                 {/* Equal USD */}
                 <div className="relative">
                   <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-3 block ml-4">
-                    Dollar Delta
+                    USD Amount
                   </label>
                   <div className="relative">
                     <DollarSign
@@ -241,7 +239,7 @@ const Withdrawals = () => {
                 {/* Payment System */}
                 <div className="relative group">
                   <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-3 block ml-4">
-                    Transfer Protocol
+                    Payment System
                   </label>
                   <div className="relative">
                     <CreditCard
@@ -256,6 +254,7 @@ const Withdrawals = () => {
                       <option value="bkash">Bkash</option>
                       <option value="rocket">Rocket</option>
                       <option value="nagad">Nagad</option>
+                      <option value="stripe">Stripe</option>
                     </select>
                     <ArrowUpRight
                       size={14}
@@ -267,7 +266,7 @@ const Withdrawals = () => {
                 {/* Account Number */}
                 <div className="relative group">
                   <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-3 block ml-4">
-                    Destination ID
+                    Account Number
                   </label>
                   <div className="relative">
                     <Wallet
@@ -290,7 +289,7 @@ const Withdrawals = () => {
                   type="submit"
                   disabled={loading || coinsToWithdraw < 200}
                   className={cn(
-                    "group relative w-full py-6 rounded-[2rem] text-white font-black text-xs uppercase tracking-[0.3em] overflow-hidden transition-all shadow-2xl active:scale-[0.98]",
+                    "group relative w-full py-6 rounded-4xl text-white font-black text-xs uppercase tracking-[0.3em] overflow-hidden transition-all shadow-2xl active:scale-[0.98]",
                     loading || coinsToWithdraw < 200
                       ? "bg-slate-800 cursor-not-allowed text-slate-600"
                       : "bg-indigo-600 hover:bg-indigo-500"
@@ -302,7 +301,7 @@ const Withdrawals = () => {
                     ) : (
                       <ArrowUpRight className="rotate-45" size={18} />
                     )}
-                    {loading ? "Initializing..." : "Authorize Settlement"}
+                    {loading ? "Processing..." : "Withdraw Now"}
                   </div>
                   {!loading && coinsToWithdraw >= 200 && (
                     <div className="absolute inset-x-0 bottom-0 h-1 bg-white/20 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />

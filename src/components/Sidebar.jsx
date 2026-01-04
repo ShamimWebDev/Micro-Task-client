@@ -22,38 +22,38 @@ const Sidebar = ({ role }) => {
   const { pathname } = useLocation();
 
   const buyerLinks = [
-    { name: "Overview", path: "/dashboard", icon: <Home size={18} /> },
+    { name: "Home", path: "/dashboard/buyer-home", icon: <Home size={18} /> },
     {
-      name: "Add Task",
+      name: "Add new Tasks",
       path: "/dashboard/add-task",
       icon: <PlusSquare size={18} />,
     },
     {
-      name: "My Archive",
+      name: "My Task’s",
       path: "/dashboard/my-tasks",
       icon: <LayoutList size={18} />,
     },
     {
-      name: "Refill Coins",
+      name: "Purchase Coin",
       path: "/dashboard/purchase-coin",
       icon: <Coins size={18} />,
     },
     {
-      name: "Transactions",
+      name: "Payment history",
       path: "/dashboard/payment-history",
       icon: <History size={18} />,
     },
   ];
 
   const workerLinks = [
-    { name: "Overview", path: "/dashboard", icon: <Home size={18} /> },
+    { name: "Home", path: "/dashboard/worker-home", icon: <Home size={18} /> },
     {
-      name: "Marketplace",
+      name: "TaskList",
       path: "/dashboard/task-list",
       icon: <LayoutList size={18} />,
     },
     {
-      name: "Submissions",
+      name: "My Submission",
       path: "/dashboard/my-submissions",
       icon: <CheckCircle2 size={18} />,
     },
@@ -115,14 +115,18 @@ const Sidebar = ({ role }) => {
                 {user?.displayName}
               </h3>
               <p className="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-[10px] font-black uppercase tracking-widest rounded-full border border-indigo-500/20">
-                {role} Protocol
+                {role === "buyer"
+                  ? "Buyer Dashboard"
+                  : role === "worker"
+                  ? "Worker Dashboard"
+                  : "Admin Dashboard"}
               </p>
             </div>
           </div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-grow px-4 pb-8 overflow-y-auto space-y-1.5 custom-scrollbar">
+        <nav className="grow overflow-y-auto py-6 px-4 space-y-2 custom-scrollbar">
           {links.map((link) => (
             <NavLink
               key={link.path}
@@ -145,7 +149,8 @@ const Sidebar = ({ role }) => {
               >
                 {link.icon}
               </span>
-              <span className="flex-grow">{link.name}</span>
+              <div className="grow" />
+              <span>{link.name}</span>
               {pathname === link.path && (
                 <motion.div
                   layoutId="activeInd"
@@ -170,7 +175,7 @@ const Sidebar = ({ role }) => {
             className="w-full flex items-center justify-center gap-3 py-4 glass text-red-400 hover:bg-red-500/10 rounded-2xl border-white/5 font-black text-xs uppercase tracking-widest transition-all"
           >
             <LogOut size={16} />
-            Terminate Session
+            Logout
           </button>
           <p className="text-[9px] text-slate-600 text-center font-black uppercase tracking-widest mt-6">
             MicroTask Core v2.4.0

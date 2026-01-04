@@ -31,8 +31,8 @@ const Footer = () => {
             </Link>
 
             <p className="text-slate-500 font-medium leading-relaxed">
-              We've engineered the future of micro-tasking. A global ecosystem
-              where talent meets opportunity at the speed of thought.
+              We've built the future of micro-tasking. A global platform where
+              talent meets opportunity at the speed of thought.
             </p>
 
             <div className="flex items-center gap-4">
@@ -100,7 +100,7 @@ const Footer = () => {
           {/* Newsletter / Contact */}
           <div>
             <h4 className="text-white font-black uppercase tracking-widest text-[10px] mb-8">
-              Global HQ
+              Contact Us
             </h4>
             <div className="space-y-6">
               <div className="flex items-center gap-4 text-slate-500">
@@ -130,15 +130,14 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-12 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest">
-            &copy; {new Date().getFullYear()} MicroTask Platform. Standard
-            Protocol v2.4
+            &copy; {new Date().getFullYear()} MicroTask Platform. Version 2.4
           </p>
 
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-slate-500 text-[10px] font-black uppercase tracking-widest">
-                System Operational
+                Status: Online
               </span>
             </div>
             <div className="text-slate-500 hover:text-white transition-colors cursor-pointer">

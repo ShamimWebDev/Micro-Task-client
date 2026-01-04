@@ -11,17 +11,17 @@ const Testimonials = () => {
     {
       id: 1,
       name: "Marcus Aurelius",
-      role: "Elite Worker",
+      role: "Top Rated Worker",
       image:
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?fit=crop&w=150&q=80",
       quote:
-        "The platform's liquidity engine is revolutionary. I get paid as soon as my work is verified. Truly best-in-class.",
+        "The platform's payment system is revolutionary. I get paid as soon as my work is verified. Truly best-in-class.",
       rating: 5,
     },
     {
       id: 2,
       name: "Elena Rodriguez",
-      role: "Boutique Buyer",
+      role: "Premium Buyer",
       image:
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=150&q=80",
       quote:
@@ -31,7 +31,7 @@ const Testimonials = () => {
     {
       id: 3,
       name: "Jean-Pierre",
-      role: "Global Arbitrage",
+      role: "Enterprise Client",
       image:
         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?fit=crop&w=150&q=80",
       quote:
@@ -41,11 +41,11 @@ const Testimonials = () => {
     {
       id: 4,
       name: "Aisha Khan",
-      role: "Verified Tasker",
+      role: "Verified Worker",
       image:
         "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?fit=crop&w=150&q=80",
       quote:
-        "Finally a platform that respects the worker's time. Transparent rules and fair compensation for every mission.",
+        "Finally a platform that respects the worker's time. Transparent rules and fair compensation for every task.",
       rating: 5,
     },
   ];
@@ -55,7 +55,7 @@ const Testimonials = () => {
       {/* Background Section Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[500px] bg-indigo-600/5 blur-[150px] rounded-full pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 pb-20">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -63,12 +63,12 @@ const Testimonials = () => {
           viewport={{ once: true }}
           className="text-center mb-24"
         >
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-12 h-[1px] bg-indigo-500" />
+          <div className="flex items-center gap-3 justify-center mb-4">
+            <div className="w-12 h-px bg-indigo-500" />
             <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
-              Success Stories
+              Voices of Trust
             </span>
-            <div className="w-12 h-[1px] bg-indigo-500" />
+            <div className="w-12 h-px bg-indigo-500" />
           </div>
           <h2 className="text-5xl md:text-6xl font-black text-white tracking-tight">
             Trusted by <span className="text-gradient">visionaries</span>
@@ -95,7 +95,7 @@ const Testimonials = () => {
             1024: { slidesPerView: 3 },
           }}
           modules={[Pagination, Autoplay]}
-          className="!pb-20 testimonials-swiper"
+          className="pb-20! testimonials-swiper"
         >
           {testimonials.map((testimonial) => (
             <SwiperSlide key={testimonial.id}>

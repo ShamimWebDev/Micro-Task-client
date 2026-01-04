@@ -67,13 +67,13 @@ const ManageUsers = () => {
       >
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-[1px] bg-indigo-500" />
+            <div className="w-12 h-px bg-indigo-500" />
             <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
-              Directory Control
+              User Management
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-            User <span className="text-gradient">Intelligence</span>
+            User <span className="text-gradient">Database</span>
           </h1>
         </div>
 
@@ -111,9 +111,12 @@ const ManageUsers = () => {
                 <UserCircle size={20} />
               </div>
               <div>
-                <h2 className="text-xl font-black text-white">
-                  Registry Management
-                </h2>
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                  All Users
+                </p>
+                <p className="text-xl font-black text-white">
+                  {users.length} Active Accounts
+                </p>
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
                   Permission and Access Control
                 </p>
@@ -133,16 +136,16 @@ const ManageUsers = () => {
               <thead>
                 <tr className="border-b border-white/5">
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                    Profile Architecture
+                    User Profile
+                  </th>
+                  <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
+                    Role
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Operational Role
+                    Balance
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Credit Index
-                  </th>
-                  <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Session Controls
+                    Actions
                   </th>
                 </tr>
               </thead>
@@ -150,7 +153,7 @@ const ManageUsers = () => {
                 {users.map((u) => (
                   <tr
                     key={u._id}
-                    className="group/row hover:bg-white/[0.02] transition-colors"
+                    className="group/row hover:bg-white/2 transition-colors"
                   >
                     <td className="px-10 py-6">
                       <div className="flex items-center gap-4">
@@ -214,7 +217,7 @@ const ManageUsers = () => {
                         <button
                           disabled={u.email === currentUser?.email}
                           onClick={() => handleRemoveUser(u._id)}
-                          className="w-10 h-10 glass rounded-xl flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-lg active:scale-95 disabled:opacity-20 disabled:cursor-not-allowed border-white/5"
+                          className="group flex items-center justify-between p-4 rounded-xl border border-white/5 bg-white/0 hover:bg-white/2 hover:border-indigo-500/30 transition-all duration-300 cursor-pointer active:scale-95 disabled:opacity-20 disabled:cursor-not-allowed"
                         >
                           <Trash2 size={18} />
                         </button>

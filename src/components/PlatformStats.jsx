@@ -47,12 +47,10 @@ const PlatformStats = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
-              className={`group relative overflow-hidden glass-card p-8 rounded-[2rem] border ${stat.borderColor} hover:border-white/20`}
+              className={`group relative overflow-hidden glass-card p-8 rounded-4xl border ${stat.borderColor} hover:border-white/20`}
             >
               {/* Card Accent Glow */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-              />
+              <div className="absolute inset-0 bg-linear-to-br from-indigo-500/0 via-indigo-500/5 to-indigo-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
               <div className="relative z-10 flex flex-col items-center text-center">
                 <div className="w-14 h-14 rounded-2xl glass border-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">

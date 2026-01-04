@@ -51,11 +51,46 @@ const MyTasks = () => {
     }
   };
 
-  const handleUpdate = async (task) => {
-    // Modal-based update would be better, using a placeholder for now
-    alert(
-      "Advanced mission modification is restricted to secure terminal. Please use primary deployment channel."
-    );
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
+
+  const handleUpdate = (task) => {
+    setEditingTask(task);
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const title = form.title.value;
+    const detail = form.detail.value;
+    const submission_info = form.submission_info.value;
+
+    try {
+      await axiosSecure.patch(`/tasks/${editingTask._id}`, {
+        task_title: title,
+        task_detail: detail,
+        submission_info: submission_info,
+      });
+
+      // Update local state
+      setTasks(
+        tasks.map((t) =>
+          t._id === editingTask._id
+            ? {
+                ...t,
+                task_title: title,
+                task_detail: detail,
+                submission_info: submission_info,
+              }
+            : t
+        )
+      );
+      setIsEditModalOpen(false);
+      setEditingTask(null);
+    } catch (err) {
+      console.error("Update failed", err);
+    }
   };
 
   if (loading) return null;
@@ -70,7 +105,7 @@ const MyTasks = () => {
       >
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-[1px] bg-indigo-500" />
+            <div className="w-12 h-px bg-indigo-500" />
             <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
               Operative Archive
             </span>
@@ -153,7 +188,7 @@ const MyTasks = () => {
                 {tasks.map((task) => (
                   <tr
                     key={task._id}
-                    className="group/row hover:bg-white/[0.02] transition-colors"
+                    className="group/row hover:bg-white/2 transition-colors"
                   >
                     <td className="px-10 py-6">
                       <div className="flex flex-col">
@@ -234,6 +269,74 @@ const MyTasks = () => {
           </div>
         </div>
       </motion.div>
+
+      {/* Edit Modal */}
+      {isEditModalOpen && editingTask && (
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="w-full max-w-lg glass-card p-8 rounded-4xl border border-white/10 shadow-2xl relative"
+          >
+            <h2 className="text-2xl font-black text-white mb-6">
+              Modify Mission Architecture
+            </h2>
+            <form onSubmit={handleUpdateSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                  Objective Title
+                </label>
+                <input
+                  name="title"
+                  defaultValue={editingTask.task_title}
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-white text-sm font-bold focus:border-indigo-500 outline-none"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                  Strategic Details
+                </label>
+                <textarea
+                  name="detail"
+                  defaultValue={editingTask.task_detail}
+                  rows="4"
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-white text-sm font-medium focus:border-indigo-500 outline-none"
+                  required
+                ></textarea>
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                  Verification Proof Protocol
+                </label>
+                <textarea
+                  name="submission_info"
+                  defaultValue={editingTask.submission_info}
+                  rows="3"
+                  className="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-white text-sm font-medium focus:border-indigo-500 outline-none"
+                  required
+                ></textarea>
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setIsEditModalOpen(false)}
+                  className="flex-1 py-3 rounded-xl font-bold text-slate-400 hover:text-white glass border-white/5"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="group p-4 rounded-xl border border-white/5 bg-white/0 hover:bg-white/2 hover:border-indigo-500/30 transition-all duration-300"
+                >
+                  Confirm Updates
+                </button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 };

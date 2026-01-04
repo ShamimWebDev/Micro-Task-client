@@ -108,7 +108,7 @@ const Register = () => {
     <div className="min-h-screen flex flex-col bg-slate-950">
       <Navbar />
 
-      <main className="flex-grow relative flex items-center justify-center overflow-hidden py-24 px-6 font-medium">
+      <main className="grow lg:flex items-center justify-center p-8 bg-slate-900 relative overflow-hidden">
         {/* Background Section Glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[600px] bg-indigo-600/5 blur-[150px] rounded-full pointer-events-none" />
 
@@ -120,25 +120,25 @@ const Register = () => {
             className="hidden lg:block space-y-12"
           >
             <Link to="/" className="group flex items-center gap-4">
-              <div className="w-14 h-14 bg-gradient-aurora rounded-[1.5rem] flex items-center justify-center shadow-2xl shadow-indigo-500/20 group-hover:rotate-12 transition-transform duration-500">
+              <div className="w-14 h-14 bg-gradient-aurora rounded-3xl flex items-center justify-center shadow-2xl shadow-indigo-500/20 group-hover:rotate-12 transition-transform duration-500">
                 <span className="text-white font-black text-2xl">M</span>
               </div>
               <span className="text-3xl font-black tracking-tight text-white line-height-1">
                 Micro<span className="text-indigo-400">Task</span>
                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mt-1">
-                  Core Identity Protocol
+                  Create Account
                 </p>
               </span>
             </Link>
 
             <div className="space-y-8">
               <h2 className="text-5xl font-black text-white leading-tight">
-                Begin your <span className="text-gradient">ascension</span> into
-                the global taskforce.
+                Begin your <span className="text-gradient">journey</span> with
+                MicroTask.
               </h2>
               <p className="text-lg text-slate-500 max-w-md">
-                High-precision micro-tasking for the next generation of digital
-                operators. Vetted. Secure. Cinematic.
+                Join our global community of workers and employers. Secure.
+                Fast. Reliable.
               </p>
             </div>
 
@@ -154,7 +154,7 @@ const Register = () => {
                 },
                 {
                   icon: <Fingerprint className="text-pink-400" />,
-                  label: "Neural Protection",
+                  label: "Data Protection",
                 },
                 {
                   icon: <Sparkles className="text-yellow-400" />,
@@ -180,15 +180,15 @@ const Register = () => {
             animate={{ opacity: 1, y: 0 }}
             className="relative max-w-md mx-auto w-full"
           >
-            <div className="glass-card p-10 rounded-[3rem] border border-white/5 relative overflow-hidden shadow-2xl">
+            <div className="relative w-full max-w-md h-[600px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-slate-800/50 backdrop-blur-xl group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-3xl" />
 
               <div className="text-center mb-10">
                 <h3 className="text-2xl font-black text-white mb-2 tracking-tight">
-                  Identity Creation
+                  Create Account
                 </h3>
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                  Synchronize your profile with the nexus
+                  Fill in your details given below
                 </p>
               </div>
 
@@ -202,7 +202,7 @@ const Register = () => {
                   <input
                     name="name"
                     type="text"
-                    placeholder="Operational Handle"
+                    placeholder="Full Name"
                     required
                     className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-4 text-white text-sm font-bold focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-700 shadow-inner"
                   />
@@ -217,7 +217,7 @@ const Register = () => {
                   <input
                     name="email"
                     type="email"
-                    placeholder="Primary Link (Email)"
+                    placeholder="Email Address"
                     required
                     className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-4 text-white text-sm font-bold focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-700 shadow-inner"
                   />
@@ -252,10 +252,10 @@ const Register = () => {
                     className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-4 text-white text-sm font-bold focus:outline-none focus:border-indigo-500 transition-all appearance-none cursor-pointer shadow-inner"
                   >
                     <option value="" disabled>
-                      Operational Role
+                      I want to...
                     </option>
-                    <option value="worker">Skill Operator (Worker)</option>
-                    <option value="buyer">Mission Client (Buyer)</option>
+                    <option value="worker">Work & Earn</option>
+                    <option value="buyer">Post Tasks</option>
                   </select>
                   <ChevronRight
                     size={14}
@@ -272,7 +272,7 @@ const Register = () => {
                   <input
                     name="password"
                     type="password"
-                    placeholder="Security Sequence (Password)"
+                    placeholder="Password"
                     required
                     className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-4 text-white text-sm font-bold focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-700 shadow-inner"
                   />
@@ -294,35 +294,32 @@ const Register = () => {
                   className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white font-black py-4 rounded-2xl transition-all shadow-xl shadow-indigo-600/10 text-xs uppercase tracking-[0.2em] active:scale-95 flex items-center justify-center gap-3 overflow-hidden"
                 >
                   {loading && <Zap className="animate-spin" size={16} />}
-                  {loading ? "Initializing..." : "Register Identity"}
+                  {loading ? "Signing Up..." : "Sign Up"}
                 </button>
               </form>
 
-              <div className="relative my-8">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-slate-900"></div>
-                </div>
-                <div className="relative flex justify-center text-[10px]">
-                  <span className="px-4 bg-slate-950 text-slate-600 font-black uppercase tracking-widest">
-                    OAuth Protocol
-                  </span>
-                </div>
+              <div className="flex items-center my-8">
+                <div className="grow bg-white/10 h-px" />
+                <span className="text-slate-500 text-sm font-medium px-4">
+                  OR
+                </span>
+                <div className="grow bg-white/10 h-px" />
               </div>
 
               <button
                 onClick={handleGoogleSignIn}
                 className="w-full bg-slate-900 border border-white/5 hover:bg-slate-800 text-white font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-3 active:scale-95 text-xs uppercase tracking-widest shadow-lg"
               >
-                <FaGoogle className="text-red-500" /> Google Synchronization
+                <FaGoogle className="text-red-500" /> Continue with Google
               </button>
 
               <p className="mt-10 text-center text-slate-500 text-[10px] font-black uppercase tracking-widest">
-                Already verified?{" "}
+                Already have an account?{" "}
                 <Link
                   to="/login"
                   className="text-indigo-400 hover:text-indigo-300 ml-1"
                 >
-                  Access Portal
+                  Sign In
                 </Link>
               </p>
             </div>

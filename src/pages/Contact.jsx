@@ -48,7 +48,7 @@ const Contact = () => {
     <div className="min-h-screen flex flex-col bg-slate-950">
       <Navbar />
 
-      <main className="flex-grow">
+      <main className="grow">
         <div className="max-w-7xl mx-auto px-6 py-24">
           {/* Header */}
           <motion.header
@@ -57,11 +57,11 @@ const Contact = () => {
             className="text-center mb-20"
           >
             <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="w-12 h-[1px] bg-indigo-500" />
+              <div className="w-12 h-px bg-indigo-500" />
               <span className="text-indigo-400 font-black uppercase tracking-[0.4em] text-[10px]">
                 Communication Hub
               </span>
-              <div className="w-12 h-[1px] bg-indigo-500" />
+              <div className="w-12 h-px bg-indigo-500" />
             </div>
             <h1 className="text-6xl md:text-7xl font-black text-white tracking-tight mb-6">
               Get In <span className="text-gradient">Touch</span>

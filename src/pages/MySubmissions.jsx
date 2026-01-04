@@ -72,13 +72,13 @@ const MySubmissions = () => {
       >
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-[1px] bg-indigo-500" />
+            <div className="w-12 h-px bg-indigo-500" />
             <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
-              Mission History
+              Submission History
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-            Operative <span className="text-gradient">Log</span>
+            My Work <span className="text-gradient">Log</span>
           </h1>
         </div>
 
@@ -88,7 +88,7 @@ const MySubmissions = () => {
           </div>
           <div>
             <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1">
-              Total Operations
+              Total Submissions
             </p>
             <p className="text-xl font-black text-white">{totalCount}</p>
           </div>
@@ -112,10 +112,10 @@ const MySubmissions = () => {
               </div>
               <div>
                 <h2 className="text-xl font-black text-white">
-                  Execution Records
+                  Submission History
                 </h2>
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
-                  Detailed Mission Lifecycle Tracking
+                  Track the status of your submitted work
                 </p>
               </div>
             </div>
@@ -123,7 +123,7 @@ const MySubmissions = () => {
             <div className="flex items-center gap-2 bg-indigo-500/10 px-4 py-2 rounded-xl border border-indigo-500/20">
               <Activity size={14} className="text-indigo-400" />
               <span className="text-[10px] font-black text-indigo-400 uppercase tracking-widest leading-none">
-                Stream Online
+                Status: Online
               </span>
             </div>
           </div>
@@ -133,19 +133,19 @@ const MySubmissions = () => {
               <thead>
                 <tr className="border-b border-white/5">
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                    Objective Architecture
+                    Task Title
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                    Origin Agent
+                    Buyer
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Bounty Index
+                    Payment Amount
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
                     Timestamp
                   </th>
                   <th className="px-10 py-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] text-center">
-                    Protocol Status
+                    Status
                   </th>
                 </tr>
               </thead>
@@ -155,7 +155,7 @@ const MySubmissions = () => {
                   return (
                     <tr
                       key={sub._id}
-                      className="group/row hover:bg-white/[0.02] transition-colors"
+                      className="group/row hover:bg-white/2 transition-colors"
                     >
                       <td className="px-10 py-6">
                         <div className="flex flex-col">
@@ -163,7 +163,7 @@ const MySubmissions = () => {
                             {sub.task_title}
                           </span>
                           <span className="text-[9px] text-slate-600 font-bold font-mono tracking-widest mt-1 uppercase">
-                            OP_REF_{sub._id.slice(-6)}
+                            ID: {sub._id.slice(-6)}
                           </span>
                         </div>
                       </td>

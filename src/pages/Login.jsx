@@ -71,7 +71,7 @@ const Login = () => {
     <div className="min-h-screen flex flex-col bg-slate-950">
       <Navbar />
 
-      <main className="flex-grow relative flex items-center justify-center overflow-hidden px-6 font-medium">
+      <main className="grow lg:flex items-center justify-center p-8 bg-slate-900 relative overflow-hidden">
         {/* Background Section Glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[500px] bg-indigo-600/5 blur-[150px] rounded-full pointer-events-none" />
 
@@ -93,10 +93,10 @@ const Login = () => {
                 </div>
               </Link>
               <h2 className="text-3xl font-black text-white mb-2 tracking-tight">
-                Access Portal
+                Welcome Back
               </h2>
               <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                Authenticate to establish connection
+                Please sign in to your account
               </p>
             </div>
 
@@ -110,7 +110,7 @@ const Login = () => {
                 <input
                   name="email"
                   type="email"
-                  placeholder="Operator ID (Email)"
+                  placeholder="Email Address"
                   required
                   className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-4 text-white text-sm font-bold focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-700 shadow-inner"
                 />
@@ -125,7 +125,7 @@ const Login = () => {
                 <input
                   name="password"
                   type="password"
-                  placeholder="Access Key (Password)"
+                  placeholder="Password"
                   required
                   className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-4 text-white text-sm font-bold focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-700 shadow-inner"
                 />
@@ -143,26 +143,23 @@ const Login = () => {
                 className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 text-white font-black py-4 rounded-2xl transition-all shadow-xl shadow-indigo-600/10 text-xs uppercase tracking-[0.2em] active:scale-95 flex items-center justify-center gap-3 overflow-hidden"
               >
                 {loading && <Zap className="animate-spin" size={16} />}
-                {loading ? "Authorizing..." : "Initialize Link"}
+                {loading ? "Signing In..." : "Sign In"}
               </button>
             </form>
 
-            <div className="relative my-8">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-900"></div>
-              </div>
-              <div className="relative flex justify-center text-[10px]">
-                <span className="px-4 bg-slate-950 text-slate-600 font-black uppercase tracking-widest">
-                  OAuth Protocol
-                </span>
-              </div>
+            <div className="flex items-center my-8">
+              <div className="grow bg-white/10 h-px" />
+              <span className="text-slate-500 text-sm font-medium px-4">
+                OR
+              </span>
+              <div className="grow bg-white/10 h-px" />
             </div>
 
             <button
               onClick={handleGoogleSignIn}
               className="w-full bg-slate-900 border border-white/5 hover:bg-slate-800 text-white font-black py-4 rounded-2xl transition-all flex items-center justify-center gap-3 active:scale-95 text-xs uppercase tracking-widest shadow-lg"
             >
-              <FaGoogle className="text-red-500" /> Google Authentication
+              <FaGoogle className="text-red-500" /> Continue with Google
             </button>
 
             <div className="mt-10 pt-8 border-t border-white/5 flex flex-col items-center gap-6">
@@ -172,12 +169,12 @@ const Login = () => {
                 <LogIn size={20} />
               </div>
               <p className="text-center text-slate-500 text-[10px] font-black uppercase tracking-widest">
-                Unverified?{" "}
+                Don't have an account?{" "}
                 <Link
                   to="/register"
                   className="text-indigo-400 hover:text-indigo-300 ml-1"
                 >
-                  Establish Identity
+                  Sign Up
                 </Link>
               </p>
             </div>

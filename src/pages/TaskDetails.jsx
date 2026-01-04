@@ -77,37 +77,37 @@ const TaskDetails = () => {
             size={16}
             className="group-hover:-translate-x-1 transition-transform"
           />
-          Termination to Marketplace
+          Back to Task List
         </button>
 
         <div className="flex items-center gap-2 bg-indigo-500/10 px-4 py-2 rounded-xl border border-indigo-500/20">
           <ShieldCheck size={14} className="text-indigo-400" />
           <span className="text-[9px] font-black text-indigo-400 uppercase tracking-widest">
-            Verified Mission
+            Verified Task
           </span>
         </div>
       </motion.nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        {/* Left: Mission Brief */}
+        {/* Left: Task Brief */}
         <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           className="lg:col-span-2 space-y-8"
         >
-          <div className="glass-card rounded-[3rem] border border-white/5 overflow-hidden relative shadow-2xl">
+          <div className="p-4 rounded-4xl bg-white/2 border border-white/5 overflow-hidden relative shadow-2xl">
             <div className="h-64 relative">
               <img
                 src={task.task_image_url}
                 alt={task.task_title}
                 className="w-full h-full object-cover grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-transparent to-transparent z-10" />
 
               <div className="absolute bottom-6 left-10">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="bg-indigo-600 text-white text-[9px] font-black px-3 py-1.5 rounded-lg uppercase tracking-widest">
-                    Active Objective
+                    Active Task
                   </div>
                 </div>
                 <h1 className="text-4xl font-black text-white tracking-tight">
@@ -126,7 +126,7 @@ const TaskDetails = () => {
                   </div>
                   <div>
                     <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1">
-                      Mission Bounty
+                      Task Payment
                     </p>
                     <p className="text-xl font-black text-yellow-500">
                       {task.payable_amount} Coins
@@ -140,7 +140,7 @@ const TaskDetails = () => {
                   </div>
                   <div>
                     <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1">
-                      Origin Agent
+                      Buyer
                     </p>
                     <p className="text-xl font-black text-white">
                       {task.buyer_name}
@@ -154,7 +154,7 @@ const TaskDetails = () => {
                   </div>
                   <div>
                     <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1">
-                      Target Date
+                      Deadline
                     </p>
                     <p className="text-xl font-black text-white">
                       {task.completion_date}
@@ -168,7 +168,7 @@ const TaskDetails = () => {
                   <div className="flex items-center gap-3 mb-4">
                     <Target size={18} className="text-indigo-400 shadow-glow" />
                     <h3 className="text-[10px] font-black text-white uppercase tracking-[0.3em]">
-                      Objective Parameters
+                      Task Description
                     </h3>
                   </div>
                   <p className="text-slate-400 font-medium leading-relaxed max-w-2xl text-md">
@@ -176,11 +176,11 @@ const TaskDetails = () => {
                   </p>
                 </section>
 
-                <section className="bg-white/[0.02] p-8 rounded-[2rem] border border-white/5">
+                <section className="bg-white/2 p-8 rounded-4xl border border-white/5">
                   <div className="flex items-center gap-3 mb-4">
                     <ShieldCheck size={18} className="text-indigo-400" />
                     <h3 className="text-[10px] font-black text-white uppercase tracking-[0.3em]">
-                      Verification Protocol
+                      Submission Requirements
                     </h3>
                   </div>
                   <p className="text-slate-500 font-bold italic text-sm leading-relaxed">
@@ -200,7 +200,7 @@ const TaskDetails = () => {
           className="space-y-6"
         >
           <div className="glass-card p-10 rounded-[2.5rem] border border-white/5 relative overflow-hidden shadow-2xl">
-            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
+            <div className="h-px w-full bg-linear-to-r from-transparent via-indigo-500/50 to-transparent" />
 
             <div className="flex items-center gap-4 mb-10">
               <div className="w-10 h-10 glass rounded-xl flex items-center justify-center text-indigo-400 shadow-inner">
@@ -208,10 +208,10 @@ const TaskDetails = () => {
               </div>
               <div>
                 <h2 className="text-xl font-black text-white tracking-tight">
-                  Report Status
+                  Submit Work
                 </h2>
                 <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-1">
-                  Upload Work Proof
+                  Provide proof of completion
                 </p>
               </div>
             </div>
@@ -219,7 +219,7 @@ const TaskDetails = () => {
             <form onSubmit={handleSubmission} className="space-y-8">
               <div className="relative group">
                 <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-3 block ml-4">
-                  Execution Proof
+                  Submission Details
                 </label>
                 <div className="relative">
                   <FileText
@@ -229,7 +229,7 @@ const TaskDetails = () => {
                   <textarea
                     name="submission_Details"
                     rows="8"
-                    placeholder="Log detailed execution results, usernames, or links..."
+                    placeholder="Enter required proof details..."
                     required
                     className="w-full bg-slate-950 border border-slate-800 rounded-3xl py-6 pl-16 pr-6 text-white text-sm font-medium focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-800 shadow-inner leading-relaxed"
                   ></textarea>
@@ -249,7 +249,7 @@ const TaskDetails = () => {
                     className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
                   />
                 )}
-                {loading ? "INITIALIZING..." : "EXECUTE SUBMISSION"}
+                {loading ? "Submitting..." : "Submit Task"}
                 <div className="absolute inset-x-0 bottom-0 h-1 bg-white/20 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
               </button>
             </form>
@@ -259,10 +259,10 @@ const TaskDetails = () => {
           <div className="glass-card p-8 rounded-[2.5rem] border border-white/5 space-y-6">
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                System Load
+                Status
               </span>
               <span className="text-emerald-500 text-[10px] font-black uppercase tracking-widest">
-                Nominal
+                Normal
               </span>
             </div>
             <div className="h-1 bg-slate-900 rounded-full overflow-hidden">
@@ -273,8 +273,7 @@ const TaskDetails = () => {
               />
             </div>
             <p className="text-[10px] font-bold text-slate-600 leading-relaxed uppercase">
-              Submissions are processed through our low-latency verification
-              pipeline. Standard latency: 12-24h.
+              Submissions are usually reviewed within 24 hours.
             </p>
           </div>
         </motion.div>

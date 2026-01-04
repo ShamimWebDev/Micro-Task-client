@@ -64,7 +64,6 @@ body {
 .glass-nav {
   background: rgba(2, 6, 23, 0.7);
   backdrop-filter: blur(20px) saturate(200%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 /* Advanced Gradients */

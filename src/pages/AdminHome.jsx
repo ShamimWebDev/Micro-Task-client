@@ -53,7 +53,7 @@ const AdminHome = () => {
 
   const stats = [
     {
-      label: "Worker Nodes",
+      label: "Active Workers",
       value: statsData?.totalWorkers || 0,
       icon: <Users size={20} />,
       color: "text-blue-400",
@@ -61,7 +61,7 @@ const AdminHome = () => {
       border: "border-blue-500/20",
     },
     {
-      label: "Buyer Entities",
+      label: "Active Buyers",
       value: statsData?.totalBuyers || 0,
       icon: <Users size={20} />,
       color: "text-indigo-400",
@@ -69,7 +69,7 @@ const AdminHome = () => {
       border: "border-indigo-500/20",
     },
     {
-      label: "Global Liquidity",
+      label: "Total Coins",
       value: statsData?.totalAvailableCoin || 0,
       icon: <Coins size={20} />,
       color: "text-yellow-400",
@@ -78,13 +78,12 @@ const AdminHome = () => {
       suffix: "Coins",
     },
     {
-      label: "Settled Capital",
+      label: "Total Payouts",
       value: statsData?.totalPayments || 0,
       icon: <CheckCircle2 size={20} />,
       color: "text-emerald-400",
       bg: "bg-emerald-500/10",
       border: "border-emerald-500/20",
-      prefix: "$",
     },
   ];
 
@@ -98,35 +97,38 @@ const AdminHome = () => {
       >
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-[1px] bg-indigo-500" />
+            <div className="w-12 h-px bg-indigo-500" />
             <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
-              System Administrator
+              Admin Dashboard
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-            Global <span className="text-gradient">Oversight</span>
+            Platform <span className="text-gradient">Overview</span>
           </h1>
         </div>
 
         <div className="flex items-center gap-4 bg-slate-900/50 p-2 rounded-2xl border border-slate-800 shadow-2xl">
           <div className="px-5 border-r border-slate-800">
             <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1 font-mono">
-              Kernel Status
+              System Status
             </p>
-            <div className="flex items-center gap-2">
-              <div className="w-2.4 h-2.4 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-              <span className="text-xs font-black text-white uppercase tracking-wider text-[10px]">
-                Operational
+            <div className="flex items-center gap-2 mt-1">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] animate-pulse" />
+              <span className="text-emerald-400 font-bold text-sm tracking-wider">
+                Online
               </span>
             </div>
           </div>
           <div className="px-5">
             <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1 font-mono">
-              Load Distribution
+              Platform Activity
             </p>
-            <span className="text-xs font-black text-indigo-400 uppercase tracking-wider text-[10px]">
-              Optimal
-            </span>
+            <h2 className="text-xl font-black text-white">
+              Withdrawal Requests
+            </h2>
+            <p className="text-slate-500 text-sm font-medium">
+              Review and manage pending withdrawal requests.
+            </p>
           </div>
         </div>
       </motion.header>
@@ -197,10 +199,10 @@ const AdminHome = () => {
               </div>
               <div>
                 <h2 className="text-xl font-black text-white">
-                  Fiscal Settlement
+                  Withdrawal Requests
                 </h2>
                 <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-1">
-                  Pending Withdrawal Requests
+                  Review and manage pending withdrawal requests.
                 </p>
               </div>
             </div>
@@ -240,7 +242,7 @@ const AdminHome = () => {
                 {withdrawRequests.map((req) => (
                   <tr
                     key={req._id}
-                    className="group/row hover:bg-white/[0.02] transition-colors"
+                    className="group p-4 rounded-xl border border-white/5 bg-white/0 hover:bg-white/2 hover:border-indigo-500/30 transition-all duration-300"
                   >
                     <td className="px-10 py-6">
                       <div className="flex items-center gap-3">
@@ -296,7 +298,7 @@ const AdminHome = () => {
                           className="group/btn relative px-6 py-3 bg-emerald-600 rounded-2xl text-white font-black text-[10px] uppercase tracking-[0.2em] overflow-hidden transition-all hover:bg-emerald-500 shadow-lg shadow-emerald-500/20 active:scale-95"
                         >
                           <span className="relative z-10">
-                            Authorize Transfer
+                            Approve Transfer
                           </span>
                           <div className="absolute inset-0 bg-emerald-400 opacity-0 group-hover/btn:opacity-20 transition-opacity" />
                         </button>

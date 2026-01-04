@@ -47,7 +47,7 @@ const BestWorkers = () => {
         >
           <div className="max-w-2xl">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-[1px] bg-indigo-500" />
+              <div className="w-12 h-px bg-indigo-500" />
               <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
                 Leaderboard
               </span>
@@ -94,7 +94,7 @@ const BestWorkers = () => {
             >
               {/* Rank Badge */}
               <div
-                className={`absolute top-8 right-8 w-10 h-10 rounded-2xl flex items-center justify-center font-black text-sm z-20 ${getRankStyle(
+                className={`absolute top-8 right-8 w-12 h-12 rounded-xl flex items-center justify-center font-black text-white shadow-lg bg-linear-to-tr ${getRankStyle(
                   index
                 )}`}
               >
@@ -103,7 +103,7 @@ const BestWorkers = () => {
 
               {/* Profile Image & Aura */}
               <div className="relative mx-auto mb-10 w-32 h-32">
-                <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-pink-500 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-linear-to-tr from-indigo-500 to-pink-500 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
                 <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden border-2 border-white/10 group-hover:border-indigo-500/50 transition-colors duration-500">
                   <img
                     src={
@@ -130,7 +130,7 @@ const BestWorkers = () => {
                 Verified Specialist
               </p>
 
-              <div className="h-[1px] w-12 bg-slate-800 mx-auto mb-8" />
+              <div className="h-px w-12 bg-slate-800 mx-auto mb-8" />
 
               <div className="flex items-center justify-center gap-6">
                 <div className="flex flex-col items-center">
@@ -143,7 +143,7 @@ const BestWorkers = () => {
                   </p>
                 </div>
 
-                <div className="w-[1px] h-10 bg-slate-800" />
+                <div className="w-px h-10 bg-slate-800" />
 
                 <div className="flex flex-col items-center">
                   <div className="flex items-center gap-1.5 text-indigo-400 font-black text-xl">

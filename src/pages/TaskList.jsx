@@ -41,17 +41,17 @@ const TaskList = () => {
       >
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-[1px] bg-indigo-500" />
+            <div className="w-12 h-px bg-indigo-500" />
             <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
-              Mission Control
+              Task Marketplace
             </span>
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-            Open <span className="text-gradient">Marketplace</span>
+            Available <span className="text-gradient">Tasks</span>
           </h1>
           <p className="text-slate-500 mt-4 font-medium max-w-lg">
-            High-precision missions vetted for the elite taskforce. Execute with
-            speed and security.
+            High-quality tasks curated for you. Complete them quickly and
+            securely.
           </p>
         </div>
 
@@ -66,7 +66,7 @@ const TaskList = () => {
           </div>
           <div className="px-5">
             <span className="text-xs font-black text-indigo-400 uppercase tracking-wider text-[10px]">
-              {tasks.length} Available Missions
+              {tasks.length} Available Tasks
             </span>
           </div>
         </div>
@@ -89,12 +89,12 @@ const TaskList = () => {
                 alt={task.task_title || task.title}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[0.2] group-hover:grayscale-0"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+              <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-indigo-500/20 to-transparent" />
 
               <div className="absolute top-4 left-4">
                 <div className="bg-slate-950/80 backdrop-blur-md text-white text-[9px] font-black px-4 py-2 rounded-xl uppercase tracking-widest border border-white/10 flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-                  Priority Mission
+                  Priority Task
                 </div>
               </div>
 
@@ -105,10 +105,10 @@ const TaskList = () => {
                   </div>
                   <div>
                     <p className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                      Origin Agent
+                      Buyer
                     </p>
                     <p className="text-xs font-bold text-white">
-                      {task.buyer_name || "Nexus Client"}
+                      {task.buyer_name || "Verified Client"}
                     </p>
                   </div>
                 </div>
@@ -135,7 +135,7 @@ const TaskList = () => {
                   </div>
                 </div>
 
-                <div className="h-[1px] w-full bg-slate-900" />
+                <div className="h-px w-full bg-slate-900" />
 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -144,7 +144,7 @@ const TaskList = () => {
                     </div>
                     <div className="flex flex-col">
                       <p className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em]">
-                        Mission Bounty
+                        Task Payment
                       </p>
                       <p className="text-xl font-black text-yellow-500">
                         {task.payable_amount}
@@ -166,13 +166,13 @@ const TaskList = () => {
                 className="group/btn relative w-full bg-slate-900 hover:bg-indigo-600 text-white font-black py-4 rounded-2xl transition-all text-center border border-white/5 overflow-hidden active:scale-[0.98]"
               >
                 <div className="relative z-10 flex items-center justify-center gap-2 text-xs uppercase tracking-widest">
-                  Initiate Mission{" "}
+                  View Task Details{" "}
                   <ArrowRight
                     size={14}
                     className="group-hover/btn:translate-x-1 transition-transform"
                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="h-full w-full bg-linear-to-r from-transparent via-indigo-500/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
               </Link>
             </div>
           </motion.div>
@@ -184,7 +184,7 @@ const TaskList = () => {
               <ShieldCheck size={32} />
             </div>
             <p className="text-[10px] font-black text-slate-600 uppercase tracking-[0.5em]">
-              Marketplace Synchronized. No Active Missions.
+              No tasks available at the moment.
             </p>
           </div>
         )}

@@ -6,23 +6,23 @@ const WhyChooseUs = () => {
   const features = [
     {
       icon: <Shield className="w-6 h-6 text-indigo-400" />,
-      title: "Bank-Grade Security",
+      title: "Secure Transactions",
       description:
-        "Proprietary fraud detection and encrypted payment streams ensure total safety.",
+        "Advanced security and encrypted payments ensure total safety.",
       gradient: "from-indigo-500/10 to-transparent",
     },
     {
       icon: <Zap className="w-6 h-6 text-pink-400" />,
-      title: "Instant Liquidity",
+      title: "Fast Payments",
       description:
         "Your earnings are available as soon as the task is verified. No waiting periods.",
       gradient: "from-pink-500/10 to-transparent",
     },
     {
       icon: <Users2 className="w-6 h-6 text-emerald-400" />,
-      title: "Vetted Community",
+      title: "Verified Users",
       description:
-        "A global ecosystem of verified experts delivering precision-grade results.",
+        "A global community of verified experts delivering high-quality results.",
       gradient: "from-emerald-500/10 to-transparent",
     },
     {
@@ -50,7 +50,7 @@ const WhyChooseUs = () => {
               transition={{ duration: 0.8 }}
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-[1px] bg-indigo-500" />
+                <div className="w-12 h-px bg-indigo-500" />
                 <span className="text-indigo-400 font-black uppercase tracking-[0.3em] text-[10px]">
                   Exceptional Value
                 </span>
@@ -58,18 +58,18 @@ const WhyChooseUs = () => {
 
               <h2 className="text-5xl md:text-6xl font-black text-white leading-[1.1] mb-8">
                 Why professionals <br /> choose our{" "}
-                <span className="text-gradient">ecosystem</span>
+                <span className="text-gradient">platform</span>
               </h2>
 
               <p className="text-lg text-slate-400 mb-10 leading-relaxed max-w-lg font-medium">
                 We've re-engineered the micro-tasking landscape. By combining
-                advanced security protocols with instant liquidity, we provide
-                an environment where talent meets opportunity at scale.
+                advanced security measures with instant payments, we provide an
+                environment where talent meets opportunity at scale.
               </p>
 
               <div className="flex flex-wrap gap-4">
                 <button className="flex items-center gap-2 bg-white text-slate-950 px-8 py-4 rounded-2xl font-black text-sm hover:scale-105 transition-all">
-                  Join Elite Workers <ArrowUpRight size={18} />
+                  Join as a Worker <ArrowUpRight size={18} />
                 </button>
                 <button className="flex items-center gap-2 glass px-8 py-4 rounded-2xl font-black text-sm text-white hover:bg-white/5 transition-all">
                   Watch Demo
@@ -92,8 +92,7 @@ const WhyChooseUs = () => {
                 {/* Accent Glow */}
                 <div
                   className={cn(
-                    "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500",
-                    feature.gradient
+                    `relative bg-slate-900 border border-white/5 rounded-3xl p-8 hover:border-white/10 transition-all duration-300 group overflow-hidden bg-linear-to-br ${feature.gradient}`
                   )}
                 />
 

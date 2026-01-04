@@ -36,7 +36,7 @@ const PurchaseCoin = () => {
       color: "from-blue-500/20 to-indigo-500/20",
       borderColor: "border-blue-500/30",
       icon: <Zap size={24} className="text-blue-400" />,
-      label: "Start-up Link",
+      label: "Starter Pack",
     },
     {
       coins: 150,
@@ -44,7 +44,7 @@ const PurchaseCoin = () => {
       color: "from-indigo-500/20 to-purple-500/20",
       borderColor: "border-indigo-500/30",
       icon: <Layers size={24} className="text-indigo-400" />,
-      label: "Operational Core",
+      label: "Standard Pack",
     },
     {
       coins: 500,
@@ -52,7 +52,7 @@ const PurchaseCoin = () => {
       color: "from-purple-500/20 to-pink-500/20",
       borderColor: "border-purple-500/30",
       icon: <Gem size={24} className="text-purple-400" />,
-      label: "Premium Sector",
+      label: "Premium Pack",
       popular: true,
     },
     {
@@ -61,7 +61,7 @@ const PurchaseCoin = () => {
       color: "from-pink-500/20 to-rose-500/20",
       borderColor: "border-pink-500/30",
       icon: <Crown size={24} className="text-rose-400" />,
-      label: "Elite Network",
+      label: "Elite Pack",
     },
   ];
 
@@ -86,16 +86,15 @@ const PurchaseCoin = () => {
         <div className="flex items-center justify-center gap-3 mb-6">
           <div className="w-12 h-px bg-indigo-500" />
           <span className="text-indigo-400 font-black uppercase tracking-[0.4em] text-[10px]">
-            Liquidity Center
+            Purchase Coins
           </span>
           <div className="w-12 h-px bg-indigo-500" />
         </div>
         <h1 className="text-5xl md:text-6xl font-black text-white tracking-tight mb-6">
-          Acquire <span className="text-gradient">Operational</span> Credits
+          Buy <span className="text-gradient">Coins</span>
         </h1>
         <p className="text-slate-500 font-medium text-lg leading-relaxed">
-          Scale your mission reach with vetted liquidity. Secure instant credit
-          allocation through our encrypted financial architecture.
+          Purchase coins to create tasks. Instant allocation to your account.
         </p>
       </motion.header>
 
@@ -109,7 +108,7 @@ const PurchaseCoin = () => {
             transition={{ delay: index * 0.1 }}
             className={cn(
               "group relative glass-card p-10 rounded-[3rem] border border-white/5 flex flex-col items-center text-center transition-all duration-500 hover:shadow-[0_0_50px_rgba(79,70,229,0.1)]",
-              pkg.popular && "border-indigo-500/30 bg-indigo-500/[0.03]"
+              pkg.popular && "border-indigo-500/30 bg-indigo-500/3"
             )}
           >
             {pkg.popular && (
@@ -120,7 +119,7 @@ const PurchaseCoin = () => {
 
             <div
               className={cn(
-                "w-16 h-16 rounded-2xl bg-gradient-to-br flex items-center justify-center mb-8 shadow-inner transition-transform group-hover:scale-110",
+                "w-16 h-16 rounded-2xl bg-linear-to-br flex items-center justify-center mb-8 shadow-inner transition-transform group-hover:scale-110",
                 pkg.color
               )}
             >
@@ -142,8 +141,8 @@ const PurchaseCoin = () => {
 
             <div className="space-y-4 mb-10 w-full">
               {[
-                { icon: <Zap size={12} />, label: "Instant Signal" },
-                { icon: <ShieldCheck size={12} />, label: "Secure Link" },
+                { icon: <Zap size={12} />, label: "Instant Delivery" },
+                { icon: <ShieldCheck size={12} />, label: "Secure Payment" },
               ].map((feat, i) => (
                 <div
                   key={i}
@@ -164,7 +163,7 @@ const PurchaseCoin = () => {
                   : "bg-slate-900 text-slate-400 hover:bg-slate-800 hover:text-white border border-white/5"
               )}
             >
-              Authorize{" "}
+              Buy Now{" "}
               <ArrowRight
                 size={14}
                 className="group-hover/btn:translate-x-1 transition-transform"
@@ -185,22 +184,21 @@ const PurchaseCoin = () => {
         <div className="glass-card p-12 rounded-[3rem] border border-white/5 relative overflow-hidden flex flex-col md:flex-row items-center gap-10">
           <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 blur-[100px]" />
 
-          <div className="w-20 h-20 glass rounded-[2rem] flex items-center justify-center text-indigo-400 shadow-inner shrink-0 group-hover:rotate-6 transition-transform">
+          <div className="w-20 h-20 glass rounded-4xl flex items-center justify-center text-indigo-400 shadow-inner shrink-0 group-hover:rotate-6 transition-transform">
             <Star size={32} />
           </div>
 
           <div className="grow">
             <h4 className="text-2xl font-black text-white mb-2 tracking-tight">
-              Enterprise Scaling?
+              Need more coins?
             </h4>
             <p className="text-slate-500 font-medium max-w-lg leading-relaxed">
-              For missions requiring high-volume liquidity (5,000+ credits), our
-              architectural consultants can provide preferential baseline rates.
+              For high-volume needs, contact us for special rates.
             </p>
           </div>
 
           <button className="whitespace-nowrap bg-white text-slate-950 px-10 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-500 hover:text-white transition-all shadow-2xl active:scale-95">
-            Secure Consultation
+            Contact Sales
           </button>
         </div>
       </motion.div>
@@ -244,7 +242,7 @@ const PurchaseCoin = () => {
                   <DollarSign size={28} className="text-indigo-400" />
                 </div>
                 <h2 className="text-2xl font-black text-white">
-                  Secure Payment
+                  Payment Details
                 </h2>
                 <p className="text-slate-500 text-sm mt-1">
                   Complete your coin purchase with Stripe

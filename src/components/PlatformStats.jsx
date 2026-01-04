@@ -34,7 +34,7 @@ const PlatformStats = () => {
   ];
 
   return (
-    <section className="relative py-24 mb-20">
+    <section className="relative py-16">
       {/* Background Section Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[300px] bg-indigo-600/5 blur-[120px] rounded-full pointer-events-none" />
 

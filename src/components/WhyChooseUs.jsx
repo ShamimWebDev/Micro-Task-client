@@ -35,7 +35,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="py-32 relative overflow-hidden">
+    <section className="py-16 relative overflow-hidden">
       {/* Decorative Blur */}
       <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-indigo-600/5 blur-[120px] -translate-x-1/2 rounded-full pointer-events-none" />
 

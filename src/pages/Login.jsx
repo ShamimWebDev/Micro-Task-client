@@ -22,14 +22,36 @@ const Login = () => {
   const { signIn, signInWithGoogle } = useContext(AuthContext);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  const handleDemoLogin = (role) => {
+    switch (role) {
+      case "buyer":
+        setEmail("buyer@gmail.com");
+        setPassword("buyer@gmail.comA");
+        break;
+      case "worker":
+        setEmail("worker@gmail.com");
+        setPassword("worker@gmail.comA");
+        break;
+      case "admin":
+        setEmail("admin@gmail.com");
+        setPassword("admin@gmail.comA");
+        break;
+      default:
+        break;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.target;
-    const email = form.email.value;
-    const password = form.password.value;
+    e.preventDefault();
+    // const form = e.target;
+    // const email = form.email.value;
+    // const password = form.password.value;
 
     setLoading(true);
     setError("");
@@ -98,9 +120,34 @@ const Login = () => {
               <h2 className="text-3xl font-black text-white mb-2 tracking-tight">
                 Welcome Back
               </h2>
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-6">
                 Please sign in to your account
               </p>
+
+              {/* Demo Credentials */}
+              <div className="flex flex-wrap gap-3 justify-center">
+                <button
+                  type="button"
+                  onClick={() => handleDemoLogin("buyer")}
+                  className="px-4 py-2 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 text-[10px] font-black uppercase tracking-wider rounded-xl border border-indigo-500/20 transition-all"
+                >
+                  Buyer Demo
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDemoLogin("worker")}
+                  className="px-4 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-wider rounded-xl border border-emerald-500/20 transition-all"
+                >
+                  Worker Demo
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleDemoLogin("admin")}
+                  className="px-4 py-2 bg-pink-500/10 hover:bg-pink-500/20 text-pink-400 text-[10px] font-black uppercase tracking-wider rounded-xl border border-pink-500/20 transition-all"
+                >
+                  Admin Demo
+                </button>
+              </div>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -115,6 +162,8 @@ const Login = () => {
                   type="email"
                   placeholder="Email Address"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-4 text-white text-sm font-bold focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-700 shadow-inner"
                 />
               </div>
@@ -130,6 +179,8 @@ const Login = () => {
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-slate-950 border border-slate-800 rounded-2xl py-4 pl-12 pr-12 text-white text-sm font-bold focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-700 shadow-inner"
                 />
                 <button

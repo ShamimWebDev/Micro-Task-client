@@ -111,7 +111,7 @@ const Register = () => {
     <div className="min-h-screen flex flex-col bg-slate-950">
       <Navbar />
 
-      <main className="grow lg:flex items-center justify-center p-8 bg-slate-900 relative overflow-hidden">
+      <main className="grow lg:flex items-center justify-center p-8 pt-24 bg-slate-900 relative overflow-hidden">
         {/* Background Section Glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[600px] bg-indigo-600/5 blur-[150px] rounded-full pointer-events-none" />
 
@@ -181,9 +181,9 @@ const Register = () => {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative max-w-md mx-auto w-full"
+            className="relative max-w-sm mx-auto w-full"
           >
-            <div className="relative w-full max-w-md h-[600px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-slate-800/50 backdrop-blur-xl group">
+            <div className="relative w-full max-w-sm h-auto p-8 rounded-3xl overflow-hidden shadow-2xl border border-white/10 bg-slate-800/50 backdrop-blur-xl group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 blur-3xl" />
 
               <div className="text-center mb-10">

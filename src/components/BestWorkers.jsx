@@ -36,7 +36,7 @@ const BestWorkers = () => {
   };
 
   return (
-    <section id="leaderboard" className="py-32 relative">
+    <section id="leaderboard" className="py-16 relative">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <motion.div

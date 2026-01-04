@@ -44,7 +44,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="py-32 relative overflow-hidden bg-slate-950/50">
+    <section className="py-16 relative overflow-hidden bg-slate-950/50">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <motion.div

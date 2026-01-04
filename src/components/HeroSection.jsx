@@ -80,7 +80,7 @@ const HeroSection = () => {
                 <div className="absolute inset-0 bg-linear-to-r from-slate-950 via-transparent to-slate-950 z-10" />
               </motion.div>
 
-              <div className="relative z-20 w-full max-w-7xl mx-auto px-6 pt-32">
+              <div className="relative z-20 w-full max-w-7xl mx-auto px-6 pt-52">
                 <div className="max-w-3xl">
                   {/* Badge */}
                   <motion.div
